@@ -1,23 +1,19 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, HTMLResponse
-from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 import sqlite3
-import spacy
 import random
+import re
+import os
 
 app = FastAPI()
-templates = Jinja2Templates(directory=".")
 
-# spaCy NLP-Modell laden
-nlp = spacy.load("en_core_web_md")
-
-# Root Endpoint
+# 1. Root endpoint
 @app.get("/")
 async def root():
     return {"message": "WhaleChat is here for YOU"}
 
-# Datenbank-Funktion
+# 2. Database logic
 def get_accommodations():
     conn = sqlite3.connect("accommodations.db")
     conn.row_factory = sqlite3.Row
@@ -28,39 +24,35 @@ def get_accommodations():
     conn.close()
     return accommodations
 
-# Alle Unterkünfte anzeigen
+# 3. All accommodations
 @app.get("/accommodations")
 async def read_accommodations():
-    accommodations = get_accommodations()
-    return JSONResponse(content=accommodations)
+    return JSONResponse(content=get_accommodations())
 
-# Chat UI laden
+# 4. Chat UI – direktes Einlesen von HTML
 @app.get("/whalechat", response_class=HTMLResponse)
-async def chat_ui(request: Request):
-    with open("index.html", "r", encoding="utf-8") as f:
-        html_content = f.read()
+async def chat_ui():
+    with open("index.html", "r", encoding="utf-8") as file:
+        html_content = file.read()
     return HTMLResponse(content=html_content)
 
-# Nutzereingabe-Modell
+# 5. ChatInput Model
 class ChatInput(BaseModel):
     message: str
 
-# Semantische Suche mit spaCy
+# 6. Chat logic
 @app.post("/whalechat")
 async def chat_logic(chat_input: ChatInput):
-    user_query = chat_input.message.lower()
-    user_doc = nlp(user_query)
-
+    search_terms = re.findall(r'\w+', chat_input.message.lower())
+    if not search_terms:
+        return {"results": []}
+    
     accommodations = get_accommodations()
-    scored_matches = []
+    matches = []
 
     for acc in accommodations:
-        acc_text = f"{acc.get('title', '')} {acc.get('description', '')} {acc.get('location', '')} {acc.get('tags', '')}".lower()
-        acc_doc = nlp(acc_text)
-        similarity = user_doc.similarity(acc_doc)
-        scored_matches.append((similarity, acc))
+        search_text = " ".join(str(value).lower() for value in acc.values())
+        if all(term in search_text for term in search_terms):
+            matches.append(acc)
 
-    scored_matches.sort(reverse=True, key=lambda x: x[0])
-    best = [acc for score, acc in scored_matches if score > 0.6][:2]
-
-    return {"results": best}
+    return {"results": random.sample(matches, 2)} if len(matches) > 2 else {"results": matches}

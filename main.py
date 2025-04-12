@@ -1,24 +1,23 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.responses import JSONResponse, HTMLResponse
 from pydantic import BaseModel
 import sqlite3
-import random
-import spacy  # Import spaCy für NLP
+import spacy
 
 app = FastAPI()
 
-# Lade das spaCy-Modell
-nlp = spacy.load("en_core_web_md")  # Mittelgroßes Modell für Semantik
+# NLP-Modell laden
+nlp = spacy.load("en_core_web_md")
 
-# 1. Root endpoint
+# Root
 @app.get("/")
 async def root():
     return {"message": "WhaleChat is here for YOU"}
 
-# 2. Hole Unterkünfte aus der Datenbank
+# Unterkünfte aus Datenbank holen
 def get_accommodations():
     conn = sqlite3.connect("accommodations.db")
-    conn.row_factory = sqlite3.Row  # Rückgabe als Diktate
+    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM accommodations")
     rows = cursor.fetchall()
@@ -26,48 +25,70 @@ def get_accommodations():
     conn.close()
     return accommodations
 
-# 3. Alle Unterkünfte zurückgeben
-@app.get("/accommodations")
-async def read_accommodations():
-    return JSONResponse(content=get_accommodations())
-
-# 4. Chat UI (Unverändert)
+# UI (HTML laden)
 @app.get("/whalechat", response_class=HTMLResponse)
 async def chat_ui():
     with open("index.html", "r", encoding="utf-8") as file:
         html_content = file.read()
     return HTMLResponse(content=html_content)
 
-# 5. ChatInput Modell
+# Datenmodell für Anfrage
 class ChatInput(BaseModel):
     message: str
 
-# 6. Neue Logik für die semantische Suche
+# 💡 Extrahiere Ankerpunkte aus Text
+def extract_constraints(message):
+    doc = nlp(message)
+    constraints = {
+        "countries": [],
+        "min_guests": None,
+    }
+
+    for ent in doc.ents:
+        if ent.label_ == "GPE":
+            constraints["countries"].append(ent.text.lower())
+
+    if "europe" in message.lower():
+        constraints["countries"].extend([
+            "france", "germany", "spain", "italy", "portugal", "austria", "switzerland", 
+            "greece", "croatia", "norway", "sweden", "netherlands", "belgium", "denmark"
+        ])
+
+    if "kid" in message.lower() or "child" in message.lower() or "children" in message.lower():
+        constraints["min_guests"] = 3
+
+    return constraints
+
+# Hauptlogik: semantische Suche mit Regeln
 @app.post("/whalechat")
 async def chat_logic(chat_input: ChatInput):
-    # Benutzeranfrage verarbeiten
     user_query = chat_input.message
-    user_vector = nlp(user_query)  # Anfrage in Vektor umwandeln
+    user_vector = nlp(user_query)
+    constraints = extract_constraints(user_query)
 
-    # Hole alle Unterkünfte aus der Datenbank
     accommodations = get_accommodations()
-    matches = []
+    filtered = []
 
     for acc in accommodations:
-        # Kombiniere die Textfelder der Unterkunft zu einem einzigen String
-        accommodation_text = " ".join(str(value).lower() for value in acc.values())
-        acc_vector = nlp(accommodation_text)  # Unterkunftstext in Vektor umwandeln
+        acc_text = " ".join(str(value).lower() for value in acc.values())
 
-        # Berechne die Ähnlichkeit zwischen der Anfrage und der Unterkunft
-        similarity_score = user_vector.similarity(acc_vector)
+        if constraints["countries"]:
+            if not any(country in acc_text for country in constraints["countries"]):
+                continue
 
-        # Füge das Ergebnis mit der Ähnlichkeit zum Treffer-Array hinzu
-        matches.append((acc, similarity_score))
+        if constraints["min_guests"]:
+            if "guests" in acc and int(acc["guests"]) < constraints["min_guests"]:
+                continue
 
-    # Sortiere nach der Ähnlichkeit (höchste zuerst)
+        filtered.append(acc)
+
+    matches = []
+    for acc in filtered:
+        acc_vector = nlp(" ".join(str(v).lower() for v in acc.values()))
+        sim_score = user_vector.similarity(acc_vector)
+        matches.append((acc, sim_score))
+
     matches.sort(key=lambda x: x[1], reverse=True)
-
-    # Gib die Top 2 besten Treffer zurück
     best_matches = [match[0] for match in matches[:2]]
-    
+
     return {"results": best_matches}

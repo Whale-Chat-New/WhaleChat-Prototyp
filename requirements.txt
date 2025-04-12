@@ -1,3 +1,4 @@
-fastapi
-uvicorn
-sqlite3
+fastapi==0.95.0
+uvicorn==0.18.2
+pydantic==1.10.4
+sqlite3==3.35.5  # SQLite3 ist in Python bereits integriert, aber falls du eine externe Version benötigst, kannst du das angeben.

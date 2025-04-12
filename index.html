@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WhaleChat</title>
+</head>
+<body>
+  <h2>🏝 Tell us your dream destination.</h2>
+  <form id="chat-form">
+    <input type="text" id="user_input" placeholder="z. B. beach, mountains, city" size="40"/>
+    <button type="submit">Suchen</button>
+  </form>
+
+  <div id="results"></div>
+
+  <script>
+    document.getElementById("chat-form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const userInput = document.getElementById("user_input").value;
+
+      const res = await fetch("/whalechat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userInput })
+      });
+
+      const data = await res.json();
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "<h3>🏡 Your Perfect Stays:</h3>" + data.results.map(r => `
+        <div style="margin-bottom:15px;">
+          <strong>${r.name}</strong><br/>
+          ${r.city}, ${r.country}<br/>
+          ${r.price} € pro Nacht<br/>
+          <a href="${r.link}" target="_blank">Details ansehen</a><br/>
+          <img src="${r.image_url}" style="max-width:300px; margin-top:5px;"><br/>
+        </div>
+      `).join("");
+    });
+  </script>
+</body>
+</html>

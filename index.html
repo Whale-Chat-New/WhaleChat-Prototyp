@@ -1,39 +1,242 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>WhaleChat</title>
+  <title>WhaleChat | VisitWhale</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Segoe+UI&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a5f8b;  /* Darker blue */
+      --secondary: #264653;
+      --chat-bg: #fff;
+    }
+    
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #edf5fa;
+      color: #333;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 40px;
+    }
+    
+    .header {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 40px;
+    }
+    
+    .main-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin: 0 0 15px 0;
+      color: #000;
+      max-width: 800px;
+    }
+    
+    .subheading {
+      font-size: 1.5rem;
+      color: #666;
+      margin: 0;
+      font-weight: 400;
+      max-width: 600px;
+    }
+    
+    .chat-container {
+      background-color: var(--chat-bg);
+      border-radius: 12px;
+      padding: 40px;
+      margin-top: 30px;
+      max-width: 800px;
+    }
+    
+
+    #chat-form {
+	  display: flex;
+	  gap: 15px;
+	  padding: 0px; /* Optional: Für besseren Abstand */
+	  border-radius: 8px; /* Optional: Für abgerundete Ecken */
+	}
+	
+	
+    #user_input {
+      flex: 1;
+      padding: 18px 25px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      outline: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    #chat-form button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0 40px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: background 0.2s;
+    }
+    
+    #chat-form button:hover {
+      background: #144a6d; /* Slightly darker on hover */
+    }
+    
+    #results {
+      margin-top: 60px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+    }
+    
+    .property-card {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.3s;
+    }
+    
+    .property-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .property-image {
+      width: 100%;
+      height: 0;
+      padding-bottom: 75%; /* 4:3 Aspect Ratio */
+      position: relative;
+    }
+    
+    .property-image img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    
+    .property-info {
+      padding: 20px;
+    }
+    
+    .property-info h3 {
+      font-size: 1.3rem;
+      margin: 0 0 10px 0;
+    }
+    
+    .property-price {
+      color: var(--primary);
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin: 10px 0;
+    }
+    
+    .property-link {
+      display: inline-block;
+      margin-top: 15px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: #666;
+      font-size: 1.2rem;
+      margin-top: 40px;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 40px 20px;
+      }
+      
+      .main-heading {
+        font-size: 2.8rem;
+      }
+      
+      .chat-container {
+        padding: 30px;
+      }
+      
+      #results {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h2>🏝 Tell us your dream destination.</h2>
-  <form id="chat-form">
-    <input type="text" id="user_input" placeholder="z. B. beach, mountains, city" size="40"/>
-    <button type="submit">Suchen</button>
-  </form>
+  <div class="container">
+    <div class="header">
+      <h1 class="main-heading">Less to Decide.<br>More to Travel.</h1>
+      <p class="subheading">Inspiration or precise request? We find it quickly.</p>
+    </div>
 
-  <div id="results"></div>
+    <div class="chat-container">
+<form id="chat-form" style="background-color: #edf5fa;">
+        <input type="text" id="user_input" placeholder="Ready to plan? Start typing..." />
+        <button type="submit">Explore</button>
+      </form>
+    </div>
+
+    <div id="results"></div>
+  </div>
 
   <script>
     document.getElementById("chat-form").addEventListener("submit", async function(e) {
       e.preventDefault();
       const userInput = document.getElementById("user_input").value;
-
-      const res = await fetch("/whalechat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userInput })
-      });
-
-      const data = await res.json();
-      const resultsDiv = document.getElementById("results");
-      resultsDiv.innerHTML = "<h3>🏡 Your Perfect Stays:</h3>" + data.results.map(r => `
-        <div style="margin-bottom:15px;">
-          <strong>${r.name}</strong><br/>
-          ${r.city}, ${r.country}<br/>
-          ${r.price} € pro Nacht<br/>
-          <a href="${r.link}" target="_blank">Details ansehen</a><br/>
-          <img src="${r.image_url}" style="max-width:300px; margin-top:5px;"><br/>
-        </div>
-      `).join("");
+      const button = this.querySelector('button');
+      
+      button.disabled = true;
+      button.textContent = 'Exploring...';
+      
+      try {
+        const res = await fetch("/whalechat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: userInput })
+        });
+        
+        const data = await res.json();
+        const resultsDiv = document.getElementById("results");
+        
+        if(data.results.length === 0) {
+          resultsDiv.innerHTML = `<div class="no-results">No perfect matches found. Try different keywords!</div>`;
+        } else {
+          resultsDiv.innerHTML = data.results.map(r => `
+            <div class="property-card">
+              <div class="property-image">
+                <img src="${r.image_url}">
+              </div>
+              <div class="property-info">
+                <h3>${r.name}</h3>
+                <div>${r.city}, ${r.country}</div>
+                <div class="property-price">${r.price} €/night</div>
+                <a href="${r.link}" class="property-link" target="_blank">View property →</a>
+              </div>
+            </div>
+          `).join("");
+        }
+      } catch(error) {
+        console.error(error);
+        alert("Search failed. Please try again.");
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Explore';
+      }
     });
   </script>
 </body>

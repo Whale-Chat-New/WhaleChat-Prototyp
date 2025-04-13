@@ -1,243 +1,389 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>WhaleChat | VisitWhale</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Segoe+UI&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #1a5f8b;  /* Darker blue */
-      --secondary: #264653;
-      --chat-bg: #fff;
-    }
-    
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #edf5fa;
-      color: #333;
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 60px 40px;
-    }
-    
-    .header {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 40px;
-    }
-    
-    .main-heading {
-      font-family: 'Playfair Display', serif;
-      font-size: 4rem;
-      font-weight: 700;
-      line-height: 1.1;
-      margin: 0 0 15px 0;
-      color: #000;
-      max-width: 800px;
-    }
-    
-    .subheading {
-      font-size: 1.5rem;
-      color: #666;
-      margin: 0;
-      font-weight: 400;
-      max-width: 600px;
-    }
-    
-    .chat-container {
-      background-color: var(--chat-bg);
-      border-radius: 12px;
-      padding: 40px;
-      margin-top: 30px;
-      max-width: 800px;
-    }
-    
+    <title>WhaleChat | VisitWhale</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;700&family=Afacad&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a5f8b; /* Dunkelblau */
+            --secondary: #264653;
+            --chat-bg: #212bca; /* Deine gewünschte Farbe für die Chat-Box */
+            --button-color: #bfd3ff; /* Neue Farbe für den Button */
+            --light-blue-bg: #d7e9f7; /* Das helle Blau für die Box */
+            --turquoise: #212bca; /* Ein schöner Türkis-Ton */
+        }
 
-    #chat-form {
-	  display: flex;
-	  gap: 15px;
-	  padding: 0px; /* Optional: Für besseren Abstand */
-	  border-radius: 8px; /* Optional: Für abgerundete Ecken */
-	}
-	
-	
-    #user_input {
-      flex: 1;
-      padding: 18px 25px;
-      border: none;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      outline: none;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    
-    #chat-form button {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 0 40px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 1.1rem;
-      transition: background 0.2s;
-    }
-    
-    #chat-form button:hover {
-      background: #144a6d; /* Slightly darker on hover */
-    }
-    
-    #results {
-      margin-top: 60px;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 30px;
-    }
-    
-    .property-card {
-      background: white;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      transition: transform 0.3s;
-    }
-    
-    .property-card:hover {
-      transform: translateY(-5px);
-    }
-    
-    .property-image {
-      width: 100%;
-      height: 0;
-      padding-bottom: 75%; /* 4:3 Aspect Ratio */
-      position: relative;
-    }
-    
-    .property-image img {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
-    
-    .property-info {
-      padding: 20px;
-    }
-    
-    .property-info h3 {
-      font-size: 1.3rem;
-      margin: 0 0 10px 0;
-    }
-    
-    .property-price {
-      color: var(--primary);
-      font-weight: bold;
-      font-size: 1.2rem;
-      margin: 10px 0;
-    }
-    
-    .property-link {
-      display: inline-block;
-      margin-top: 15px;
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: bold;
-    }
-    
-    .no-results {
-      grid-column: 1 / -1;
-      text-align: center;
-      color: #666;
-      font-size: 1.2rem;
-      margin-top: 40px;
-    }
-    
-    @media (max-width: 768px) {
-      .container {
-        padding: 40px 20px;
-      }
-      
-      .main-heading {
-        font-size: 2.8rem;
-      }
-      
-      .chat-container {
-        padding: 30px;
-      }
-      
-      #results {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+        body {
+            font-family: 'Afacad', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #edf5fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: var(--light-blue-bg);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 0px 0px rgba(0,0,0,0.1);
+            width: 98%;
+            max-width: 1400px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 40px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .main-heading-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .main-heading-container::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 0;
+            width: 150px;
+            height: 5px;
+            background-color: var(--turquoise);
+        }
+
+        .main-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 5.5rem;
+            font-weight: 300;
+            line-height: 1.1;
+            margin: 0 0 10px 0;
+            color: var(--turquoise);
+            max-width: 800px;
+        }
+
+        .subheading {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--turquoise);
+            margin: 0;
+            font-weight: 300;
+            max-width: 600px;
+            text-align: left;
+        }
+
+        .chat-container {
+            margin-top: 100px;
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        #chat-form {
+            display: flex;
+            width: 77%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-family: 'Afacad', sans-serif;
+            background-color: var(--chat-bg);
+            height: 70px;
+            align-items: center;
+            padding-right: 10px;
+        }
+
+        #user_input {
+            flex: 1;
+            padding: 20px 25px;
+            border: none;
+            font-size: 1.4rem;
+            outline: none;
+            font-family: 'Afacad', sans-serif;
+            color: white;
+            background-color: transparent;
+            margin-right: 10px;
+        }
+
+        #chat-form button {
+            background-color: var(--button-color);
+            color: black;
+            border: none;
+            padding: 15px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+            font-family: 'Afacad', sans-serif;
+            width: auto;
+            min-width: 80px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #chat-form button:hover {
+            background-color: #4c8a93;
+        }
+
+        #chat-form button:hover svg {
+            transform: translateX(3px);
+        }
+
+        #chat-form button svg {
+            width: 30px;
+            height: 30px;
+            transition: transform 0.2s ease;
+        }
+
+        #results {
+            margin-top: 60px;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(550px, 1fr));
+            gap: 30px;
+        }
+
+        .card-wrapper {
+            background: white;
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .card-wrapper:hover {
+            transform: translateY(-3px);
+        }
+
+        .property-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+
+        .property-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .property-image {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            position: relative;
+            overflow: hidden;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .property-info {
+            padding: 20px;
+        }
+
+        .property-info h3 {
+            font-size: 1.3rem;
+            margin: 0 0 10px 0;
+        }
+
+        .property-price {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        /* Button "Start Here" */
+        .start-here-btn {
+            background-color: var(--button-color);
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border-radius: 8px;
+            font-family: 'Afacad', sans-serif;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        .start-here-btn:hover {
+            background-color: #4c8a93;
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: #666;
+            font-size: 1.2rem;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                width: 98%;
+            }
+            .main-heading-container::before {
+                top: -10px;
+                width: 40px;
+                height: 2px;
+            }
+            .main-heading {
+                font-size: 3.0rem;
+            }
+            .subheading {
+                font-size: 1.3rem;
+            }
+            .chat-container {
+                padding: 0;
+                justify-content: flex-start;
+            }
+            #chat-form {
+                width: 100%;
+                height: 60px;
+            }
+            #user_input {
+                font-size: 1.2rem;
+                padding: 15px 20px;
+            }
+            #chat-form button {
+                padding: 15px 20px;
+                min-width: 80px;
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1 class="main-heading">Less to Decide.<br>More to Travel.</h1>
-      <p class="subheading">Inspiration or precise request? We find it quickly.</p>
-    </div>
-
-    <div class="chat-container">
-<form id="chat-form" style="background-color: #edf5fa;">
-        <input type="text" id="user_input" placeholder="Ready to plan? Start typing..." />
-        <button type="submit">Explore</button>
-      </form>
-    </div>
-
-    <div id="results"></div>
-  </div>
-
-  <script>
-    document.getElementById("chat-form").addEventListener("submit", async function(e) {
-      e.preventDefault();
-      const userInput = document.getElementById("user_input").value;
-      const button = this.querySelector('button');
-      
-      button.disabled = true;
-      button.textContent = 'Exploring...';
-      
-      try {
-        const res = await fetch("/whalechat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: userInput })
-        });
-        
-        const data = await res.json();
-        const resultsDiv = document.getElementById("results");
-        
-        if(data.results.length === 0) {
-          resultsDiv.innerHTML = `<div class="no-results">No perfect matches found. Try different keywords!</div>`;
-        } else {
-          resultsDiv.innerHTML = data.results.map(r => `
-            <div class="property-card">
-              <div class="property-image">
-                <img src="${r.image_url}">
-              </div>
-              <div class="property-info">
-                <h3>${r.name}</h3>
-                <div>${r.city}, ${r.country}</div>
-                <div class="property-price">${r.price} €/night</div>
-                <a href="${r.link}" class="property-link" target="_blank">View property →</a>
-              </div>
+    <div class="container">
+        <div class="header">
+            <div class="main-heading-container">
+                <h1 class="main-heading">Less to Decide.<br>More to Travel.</h1>
             </div>
-          `).join("");
+            <p class="subheading">Inspiration or precise request? We find it quickly.</p>
+        </div>
+
+        <div class="chat-container">
+            <form id="chat-form">
+                <input type="text" id="user_input" placeholder="Ready to plan? Start typing..." style="color: white;" />
+                <button type="submit" style="display: flex; align-items: center; padding: 10px 15px;">
+                    <span>Explore</span>
+                    <svg height="30" width="30" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="#000000" transform="matrix(-1, 0, 0, 1, 0, 0)" style="margin-left: 10px;">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+                        <g id="SVGRepo_iconCarrier">
+                            <style type="text/css">
+                                .st0{fill:#000000;}
+                            </style>
+                            <g>
+                                <path class="st0" d="M507.068,194.059c-5.3-6.143-13.759-8.507-21.481-6.013l-59.859,17.264 c-11.406,3.695-23.81,2.792-34.574-2.507l-68.887-33.742l61.093-80.864c4.682-4.847,5.584-12.261,2.139-18.095 c-3.422-5.809-10.336-8.638-16.848-6.903L247.486,116.32l23.597,11.572l-16.23,8.115l-24.69-12.095L124.278,72.015 C65.799,43.262,18.154,52.695,3.16,83.208c-14.994,30.522,26.591,49.402,57.102,64.395l105.696,52.041l54.749,242.78 c1.877,8.982,10.003,15.28,19.224,14.828c9.172-0.464,16.633-7.509,17.632-16.669l33.956-179.158l73.569,36.226 c47.073,21.732,97.259,19.64,112.253-10.86l32.579-70.61C513.507,208.911,512.39,200.19,507.068,194.059z"/>
+                            </g>
+                        </g>
+                    </svg>
+                </button>
+            </form>
+        </div>
+
+        <div id="results"></div>
+    </div>
+
+    <script>
+        // Preis-Count-Up Funktion
+        function animatePrice(element, duration = 2000) {
+            const target = parseFloat(element.getAttribute("data-target"));
+            let startTime = null;
+            function updatePrice(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const progress = timestamp - startTime;
+                const current = Math.min(Math.floor((progress / duration) * target), target);
+                element.textContent = `${current} €/night`;
+                if (progress < duration) {
+                    requestAnimationFrame(updatePrice);
+                }
+            }
+            requestAnimationFrame(updatePrice);
         }
-      } catch(error) {
-        console.error(error);
-        alert("Search failed. Please try again.");
-      } finally {
-        button.disabled = false;
-        button.textContent = 'Explore';
-      }
-    });
-  </script>
+
+        document.getElementById("chat-form").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            const userInput = document.getElementById("user_input").value;
+            const button = this.querySelector('button');
+
+            button.disabled = true;
+            button.innerHTML = '<span>Exploring...</span>';
+
+            try {
+                const res = await fetch("/whalechat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: userInput })
+                });
+
+                const data = await res.json();
+                const resultsDiv = document.getElementById("results");
+
+                if(data.results.length === 0) {
+                    resultsDiv.innerHTML = `<div class="no-results">No perfect matches found. Try different keywords!</div>`;
+                } else {
+                    resultsDiv.innerHTML = data.results.map(r => `
+                        <div class="card-wrapper">
+                            <div class="property-card">
+                                <div class="property-image">
+                                    <img src="${r.image_url}">
+                                </div>
+                                <div class="property-info">
+                                    <h3>${r.name}</h3>
+                                    <div>${r.city}, ${r.country}</div>
+                                    <div class="property-price" data-target="${r.price}">0 €/night</div>
+                                    <button class="start-here-btn" onclick="window.open('${r.link}', '_blank')">Start Here</button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join("");
+
+                    // Starte Animation für alle Preisfelder
+                    document.querySelectorAll(".property-price").forEach(el => {
+                        animatePrice(el);
+                    });
+                }
+            } catch(error) {
+                console.error(error);
+                alert("Search failed. Please try again.");
+            } finally {
+                button.disabled = false;
+                button.innerHTML = `
+                    <span>Explore</span>
+                    <svg height="30" width="30" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="#000000" transform="matrix(-1, 0, 0, 1, 0, 0)" style="margin-left: 10px;">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+                        <g id="SVGRepo_iconCarrier">
+                            <style type="text/css">
+                                .st0{fill:#000000;}
+                            </style>
+                            <g>
+                                <path class="st0" d="M507.068,194.059c-5.3-6.143-13.759-8.507-21.481-6.013l-59.859,17.264 c-11.406,3.695-23.81,2.792-34.574-2.507l-68.887-33.742l61.093-80.864c4.682-4.847,5.584-12.261,2.139-18.095 c-3.422-5.809-10.336-8.638-16.848-6.903L247.486,116.32l23.597,11.572l-16.23,8.115l-24.69-12.095L124.278,72.015 C65.799,43.262,18.154,52.695,3.16,83.208c-14.994,30.522,26.591,49.402,57.102,64.395l105.696,52.041l54.749,242.78 c1.877,8.982,10.003,15.28,19.224,14.828c9.172-0.464,16.633-7.509,17.632-16.669l33.956-179.158l73.569,36.226 c47.073,21.732,97.259,19.64,112.253-10.86l32.579-70.61C513.507,208.911,512.39,200.19,507.068,194.059z"/>
+                            </g>
+                        </g>
+                    </svg>
+                `;
+            }
+        });
+    </script>
 </body>
 </html>

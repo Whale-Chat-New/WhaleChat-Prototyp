@@ -10,7 +10,7 @@ app = FastAPI()
 nlp = spacy.load("en_core_web_md")
 
 # Root
-@app.get("/")
+@app.get("/chat")
 async def root():
     return {"message": "WhaleChat is here for YOU"}
 
@@ -26,7 +26,7 @@ def get_accommodations():
     return accommodations
 
 # UI (HTML laden)
-@app.get("/whalechat", response_class=HTMLResponse)
+@app.get("/", response_class=HTMLResponse)
 async def chat_ui():
     with open("index.html", "r", encoding="utf-8") as file:
         html_content = file.read()
@@ -60,7 +60,7 @@ def extract_constraints(message):
     return constraints
 
 # Hauptlogik: semantische Suche mit Regeln
-@app.post("/whalechat")
+@app.post("/")
 async def chat_logic(chat_input: ChatInput):
     user_query = chat_input.message
     user_vector = nlp(user_query)

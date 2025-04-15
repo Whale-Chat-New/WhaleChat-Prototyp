@@ -1,2 +1,2 @@
 # WhaleChat-Prototyp
-Travel Modern - Use Whale
+Prototyp für das Alles-Veränderde Reise-Tool

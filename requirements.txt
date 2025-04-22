@@ -4,3 +4,4 @@ pydantic==1.10.7
 python-dotenv==1.0.0
 requests==2.31.0
 spacy==3.7.2
+en-core-web-md @ https://github.com/explosion/spacy-models/releases/download/en_core_web_md-3.7.1/en_core_web_md-3.7.1-py3-none-any.whl

@@ -30,34 +30,40 @@ FIELDS = ["city", "country", "price", "guests", "features", "type", "category", 
 def build_prompt(user_prompt: str) -> str:
     return f"""
     
-ONLY OUTPUT RAW JSON. DO NOT INCLUDE MARKDOWN, CODE BLOCKS, OR EXTRA TEXT
+ONLY OUTPUT RAW JSON. DO NOT USE MARKDOWN, CODE BLOCKS, OR EXTRA TEXT.
 
-If other than English, translate the prompt at first to English and thn do the follwing Job.
+Translate non-English inputs into English first. Then extract structured travel data from the user’s request using the fields below.
 
-You transform  travel requests for accommodations into structured search filters. Use your best judgment to get the most of the user's intent to these database fields:
+**Target Fields:**
 
-Target Fields: `city`, `country`, `price`, `guests`, `features`, `type`, `category`, `amenities`
+`city`, `country`, `price`, `guests`, `features`, `type`, `category`, `amenities`
 
-Core Principles:
+**Instructions:**
 
-1. **Intent Over Literal Matches**
-    - Focus on what the user *means* rather than exact words and add as many key words that fit.
-    - Example: "I wanna wake up to waves" → Prioritize `features: "Beachfront"` even if no direct keyword matches.
-    - If there is a hint on the season/month add fitting key words to type`
-2. **Contextual Field Assignment**
-    - If a concept could fit multiple fields (e.g., "mountain" → `features` OR `type`), include it in all plausible ones.
-   - If a keyword (e.g., "pool") could match multiple fields, include it in ALL possible fields.
-        Example: "pool" → Add to `features`, `amenities`, AND `type`
-    - When uncertain, prefer `features` for physical traits and `type` for experiential ones.
+1. **Understand Intent, Not Just Words**
+    - Focus on what the user *wants*, not literal terms.
+    - “I want to hear waves” → `features: "Beachfront"`
+    - If a season/month is mentioned, reflect it in `type`.
+2. **Assign Keywords to All Relevant Fields**
+    - If a term fits multiple fields (e.g. “pool”), add to all: `features`, `amenities`, `type`.
+    - `features` = physical traits
+    - `type` = vibe, region, or travel style
 3. **Smart Defaults**
-    - If only a region is mentioned ("Tuscany"), set `country: "Italy"` and add region to `type`.
-    - For ambiguous group sizes ("family trip"), default to `guests: 4`.
-The `country` field MUST contain a specific country name (e.g., "France", "Spain"). If the user mentions a continent (e.g., "Europe"), leave the `country` field empty and include the continent in the `type` field (e.g., `type: ["Europe"]`)    - High confidence: Direct matches ("Paris", "villa")
-    - Medium confidence: Clear implications ("cheap" → price filter)
-    - Low confidence: Vague terms ("nice") → Ignore unless recurring
-    
-Definitiv Output Rule:
-Output only in this JSON Format.
+    - Region only? Set country (e.g., “Tuscany” → `country: "Italy"` + `type: "Tuscany"`)
+    - Group size hints: “couple” → 2, “family” → 4, “friends” → 5
+    - Continent? Leave `country` empty, set continent in `type`
+4. **Always Output All Fields**
+    - `country` must be a valid country or blank
+    - Include a natural `summary` at the end like:
+        
+        `"summary": "You’re looking for a cozy hideaway with mountain views, right?"`
+        
+
+**Final Format Example:**
+
+(Do not change structure, just fill in with user’s intent)
+
+```json
 "price": 300,
 "rating": 4.9,
 "city": "Paro",
@@ -68,12 +74,10 @@ Output only in this JSON Format.
 "availability": "Available",
 "country": "Bhutan",
 "guests": 4,
-"type": "Countryside, Adventure, Chilling, Luxury, Comfort, Asia"
+"type": "Countryside, Adventure, Chilling, Luxury, Comfort, Asia",
+"summary": "You are looking for a cozy place in Europe with sea view, right?"
 
-
-Also generate a short and friendly summary sentence for the user explaining what you’re looking for.
-Return it as "summary": "You are looking for a cozy place in Europe with sea view, right?"
-
+```
 
 Prompt: {user_prompt}
 """
@@ -341,3 +345,4 @@ async def chat_logic(chat_input: ChatInput):
         "recognized": sanitized_llm_filters,
         "summary": summary_text
     }
+

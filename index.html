@@ -434,6 +434,8 @@
                 </button>
             </form>
         </div>
+	<div id="summary-box" style="margin-top: 30px; font-size: 1.1rem; color: var(--secondary); font-weight: 600;"></div>
+	<div id="recognized-box" style="margin-top: 10px; font-size: 1rem; color: #444;"></div>
 
         <div id="results"></div>
     </div>
@@ -471,6 +473,14 @@
 
                 const data = await res.json();
                 const resultsDiv = document.getElementById("results");
+				
+				document.getElementById("summary-box").innerText = data.summary || "";
+				document.getElementById("recognized-box").innerText = data.recognized?.type ? 
+					"Key Words: " + (Array.isArray(data.recognized.type) ?
+						data.recognized.type.join(", ") :
+						data.recognized.type)
+					: "";
+
 
                 if(data.results.length === 0) {
                     resultsDiv.innerHTML = `<div class="no-results">No perfect matches found. Try different keywords!</div>`;

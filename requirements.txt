@@ -2,5 +2,6 @@ fastapi==0.95.0
 uvicorn==0.18.2
 pydantic==1.10.4
 jinja2
-spacy
-en_core_web_md @ https://github.com/explosion/spacy-models/releases/download/en_core_web_md-3.7.1/en_core_web_md-3.7.1-py3-none-any.whl
+spacy==3.7.1
+python-dotenv
+https://github.com/explosion/spacy-models/releases/download/en_core_web_md-3.7.1/en_core_web_md-3.7.1-py3-none-any.whl

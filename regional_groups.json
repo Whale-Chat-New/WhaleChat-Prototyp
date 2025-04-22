@@ -1,0 +1,48 @@
+{
+  "europe": [
+    "france", "germany", "italy", "spain", "portugal", "austria", "switzerland", "netherlands",
+    "belgium", "greece", "sweden", "finland", "norway", "denmark", "ireland", "czech republic",
+    "slovakia", "slovenia", "croatia", "hungary", "poland", "romania", "bulgaria"
+  ],
+  "alps": [
+    "switzerland", "austria", "italy", "france", "germany"
+  ],
+  "scandinavia": [
+    "sweden", "norway", "denmark", "finland", "iceland"
+  ],
+  "balkans": [
+    "croatia", "serbia", "bosnia and herzegovina", "montenegro", "albania", "north macedonia", "kosovo"
+  ],
+  "caribbean": [
+    "jamaica", "dominican republic", "bahamas", "barbados", "st. lucia", "trinidad and tobago",
+    "aruba", "grenada", "antigua and barbuda", "cuba", "puerto rico"
+  ],
+  "asia": [
+    "japan", "china", "india", "thailand", "vietnam", "south korea", "malaysia", "indonesia",
+    "bhutan", "nepal", "mongolia", "sri lanka", "philippines", "laos", "cambodia"
+  ],
+  "southeast asia": [
+    "thailand", "vietnam", "indonesia", "malaysia", "philippines", "singapore", "cambodia", "laos", "myanmar"
+  ],
+  "middle east": [
+    "united arab emirates", "israel", "turkey", "lebanon", "saudi arabia", "qatar", "oman", "jordan"
+  ],
+  "oceania": [
+    "australia", "new zealand", "fiji", "samoa", "tonga", "papua new guinea", "vanuatu"
+  ],
+  "africa": [
+    "morocco", "egypt", "south africa", "kenya", "tanzania", "namibia", "tunisia", "ghana", "ethiopia"
+  ],
+  "north america": [
+    "united states", "usa", "canada", "mexico"
+  ],
+  "south america": [
+    "brazil", "argentina", "chile", "peru", "colombia", "uruguay", "bolivia", "ecuador"
+  ],
+  "central america": [
+    "costa rica", "panama", "guatemala", "nicaragua", "honduras", "belize", "el salvador"
+  ],
+  "polar": [
+    "greenland", "iceland", "antarctica"
+  ]
+}

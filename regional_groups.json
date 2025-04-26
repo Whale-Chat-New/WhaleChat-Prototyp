@@ -2,47 +2,124 @@
   "europe": [
     "france", "germany", "italy", "spain", "portugal", "austria", "switzerland", "netherlands",
     "belgium", "greece", "sweden", "finland", "norway", "denmark", "ireland", "czech republic",
-    "slovakia", "slovenia", "croatia", "hungary", "poland", "romania", "bulgaria"
+    "slovakia", "slovenia", "croatia", "hungary", "poland", "romania", "bulgaria", "estonia",
+    "latvia", "lithuania", "luxembourg", "malta", "cyprus", "iceland", "liechtenstein", "monaco",
+    "san marino", "vatican city", "andorra", "moldova", "ukraine", "belarus", "serbia", "montenegro",
+    "albania", "north macedonia", "bosnia and herzegovina", "kosovo"
   ],
   "alps": [
-    "switzerland", "austria", "italy", "france", "germany"
+    "switzerland", "austria", "italy", "france", "germany", "liechtenstein", "slovenia"
   ],
   "scandinavia": [
-    "sweden", "norway", "denmark", "finland", "iceland"
+    "sweden", "norway", "denmark", "finland", "iceland", "faroe islands", "aland islands"
   ],
   "balkans": [
-    "croatia", "serbia", "bosnia and herzegovina", "montenegro", "albania", "north macedonia", "kosovo"
+    "croatia", "serbia", "bosnia and herzegovina", "montenegro", "albania", "north macedonia", "kosovo",
+    "bulgaria", "romania", "greece", "slovenia", "moldova"
+  ],
+  "baltic": [
+    "estonia", "latvia", "lithuania", "finland"
+  ],
+  "mediterranean": [
+    "spain", "france", "italy", "greece", "croatia", "montenegro", "albania", "turkey", "cyprus", "malta",
+    "slovenia", "morocco", "tunisia", "algeria", "libya", "egypt", "lebanon", "israel", "syria"
   ],
   "caribbean": [
     "jamaica", "dominican republic", "bahamas", "barbados", "st. lucia", "trinidad and tobago",
-    "aruba", "grenada", "antigua and barbuda", "cuba", "puerto rico"
+    "aruba", "grenada", "antigua and barbuda", "cuba", "puerto rico", "dominica", "st. vincent and the grenadines",
+    "st. kitts and nevis", "cayman islands", "british virgin islands", "us virgin islands", "haiti", "belize"
   ],
   "asia": [
     "japan", "china", "india", "thailand", "vietnam", "south korea", "malaysia", "indonesia",
-    "bhutan", "nepal", "mongolia", "sri lanka", "philippines", "laos", "cambodia"
+    "bhutan", "nepal", "mongolia", "sri lanka", "philippines", "laos", "cambodia", "taiwan",
+    "hong kong", "macau", "brunei", "bangladesh", "pakistan", "afghanistan", "kazakhstan",
+    "uzbekistan", "turkmenistan", "kyrgyzstan", "tajikistan", "maldives", "timor-leste", "myanmar"
   ],
   "southeast asia": [
-    "thailand", "vietnam", "indonesia", "malaysia", "philippines", "singapore", "cambodia", "laos", "myanmar"
+    "thailand", "vietnam", "indonesia", "malaysia", "philippines", "singapore", "cambodia", "laos", "myanmar",
+    "brunei", "timor-leste"
   ],
   "middle east": [
-    "united arab emirates", "israel", "turkey", "lebanon", "saudi arabia", "qatar", "oman", "jordan"
+    "united arab emirates", "israel", "turkey", "lebanon", "saudi arabia", "qatar", "oman", "jordan",
+    "kuwait", "bahrain", "iraq", "iran", "yemen", "syria", "palestine", "armenia", "azerbaijan", "georgia"
+  ],
+  "caucasus": [
+    "armenia", "azerbaijan", "georgia", "russia"
+  ],
+  "central asia": [
+    "kazakhstan", "uzbekistan", "turkmenistan", "kyrgyzstan", "tajikistan", "afghanistan", "mongolia"
+  ],
+  "south asia": [
+    "india", "pakistan", "bangladesh", "nepal", "bhutan", "sri lanka", "maldives", "afghanistan"
+  ],
+  "east asia": [
+    "china", "japan", "south korea", "north korea", "mongolia", "taiwan", "hong kong", "macau"
   ],
   "oceania": [
-    "australia", "new zealand", "fiji", "samoa", "tonga", "papua new guinea", "vanuatu"
+    "australia", "new zealand", "fiji", "samoa", "tonga", "papua new guinea", "vanuatu",
+    "solomon islands", "kiribati", "micronesia", "palau", "marshall islands", "nauru", "tuvalu",
+    "new caledonia", "french polynesia", "cook islands", "niue", "tokelau"
+  ],
+  "pacific islands": [
+    "fiji", "samoa", "tonga", "vanuatu", "solomon islands", "kiribati", "micronesia", "palau",
+    "marshall islands", "nauru", "tuvalu", "new caledonia", "french polynesia", "cook islands"
   ],
   "africa": [
-    "morocco", "egypt", "south africa", "kenya", "tanzania", "namibia", "tunisia", "ghana", "ethiopia"
+    "morocco", "egypt", "south africa", "kenya", "tanzania", "namibia", "tunisia", "ghana", "ethiopia",
+    "algeria", "libya", "sudan", "south sudan", "angola", "mozambique", "zambia", "zimbabwe", "botswana",
+    "madagascar", "mauritius", "seychelles", "senegal", "cameroon", "nigeria", "cote d'ivoire", "rwanda",
+    "uganda", "democratic republic of the congo", "republic of the congo", "gabon", "benin", "togo",
+    "liberia", "sierra leone", "gambia", "guinea", "guinea-bissau", "equatorial guinea", "burkina faso",
+    "mali", "niger", "chad", "mauritania", "somalia", "djibouti", "eritrea", "lesotho", "eswatini",
+    "comoros", "cape verde", "sao tome and principe"
+  ],
+  "north africa": [
+    "morocco", "algeria", "tunisia", "libya", "egypt", "western sahara", "mauritania"
+  ],
+  "sub-saharan africa": [
+    "south africa", "kenya", "tanzania", "namibia", "ghana", "ethiopia", "angola", "mozambique",
+    "zambia", "zimbabwe", "botswana", "madagascar", "senegal", "nigeria", "rwanda", "uganda"
   ],
   "north america": [
-    "united states", "usa", "canada", "mexico"
+    "united states", "usa", "canada", "mexico", "greenland", "bermuda", "st. pierre and miquelon"
   ],
   "south america": [
-    "brazil", "argentina", "chile", "peru", "colombia", "uruguay", "bolivia", "ecuador"
+    "brazil", "argentina", "chile", "peru", "colombia", "uruguay", "bolivia", "ecuador",
+    "venezuela", "paraguay", "guyana", "suriname", "french guiana", "falkland islands"
   ],
   "central america": [
     "costa rica", "panama", "guatemala", "nicaragua", "honduras", "belize", "el salvador"
   ],
+  "latin america": [
+    "mexico", "brazil", "argentina", "chile", "peru", "colombia", "uruguay", "bolivia", "ecuador",
+    "venezuela", "paraguay", "costa rica", "panama", "guatemala", "nicaragua", "honduras", "belize",
+    "el salvador", "cuba", "dominican republic", "puerto rico", "haiti", "jamaica"
+  ],
+  "andean": [
+    "colombia", "ecuador", "peru", "bolivia", "chile", "argentina", "venezuela"
+  ],
   "polar": [
-    "greenland", "iceland", "antarctica"
+    "greenland", "iceland", "antarctica", "svalbard and jan mayen", "falkland islands"
+  ],
+  "arctic": [
+    "greenland", "iceland", "norway", "sweden", "finland", "russia", "canada", "alaska (usa)", "svalbard and jan mayen"
+  ],
+  "british isles": [
+    "united kingdom", "ireland", "isle of man", "channel islands", "scotland", "wales", "england", "northern ireland"
+  ],
+  "arabian peninsula": [
+    "saudi arabia", "yemen", "oman", "united arab emirates", "qatar", "bahrain", "kuwait", "jordan", "iraq"
+  ],
+  "maghreb": [
+    "morocco", "algeria", "tunisia", "libya", "mauritania", "western sahara"
+  ],
+  "horn of africa": [
+    "ethiopia", "eritrea", "djibouti", "somalia", "kenya", "sudan", "south sudan"
+  ],
+  "sahel": [
+    "senegal", "mauritania", "mali", "burkina faso", "niger", "nigeria", "chad", "sudan", "eritrea"
+  ],
+  "indian ocean islands": [
+    "madagascar", "mauritius", "seychelles", "comoros", "reunion", "mayotte", "maldives", "sri lanka"
   ]
 }

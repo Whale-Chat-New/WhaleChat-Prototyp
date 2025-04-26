@@ -4,6 +4,15 @@
     <title>WhaleChat | VisitWhale</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;700&family=Afacad:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-D760G5540Y"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-D760G5540Y');
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;700&family=Afacad:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #1a5f8b;
@@ -476,7 +485,7 @@
 				
 				document.getElementById("summary-box").innerText = data.summary || "";
 				document.getElementById("recognized-box").innerText = data.recognized?.type ? 
-					"Key Words: " + (Array.isArray(data.recognized.type) ?
+					"And your Perfect Set-Up is: " + (Array.isArray(data.recognized.type) ?
 						data.recognized.type.join(", ") :
 						data.recognized.type)
 					: "";

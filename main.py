@@ -22,7 +22,6 @@ TOGETHER_HEADERS = {
     "Authorization": f"Bearer {TOGETHER_API_KEY}",
     "Content-Type": "application/json"
 }
-print("TOGETHER_API_KEY:", TOGETHER_API_KEY)
 
 FIELDS = ["city", "country", "price", "guests", "features", "type", "category", "amenities"]
 
@@ -52,6 +51,7 @@ Translate non-English inputs into English first. Then extract structured travel 
     - `type` = vibe, region, or travel style
 3. **Smart Defaults**
     - Region only? Set country (e.g., “Tuscany” → `country: "Italy"` + `type: "Tuscany"`)
+    - Only Include a Max Price if limiting words like budget/not expensive etc. or direct price limit are included 
     - Group size hints: “couple” → 2, “family” → 4, “friends” → 5
     - Continent? Leave `country` empty, set continent in `type`
 4. **Always Output All Fields**
@@ -78,7 +78,7 @@ Translate non-English inputs into English first. Then extract structured travel 
 "country": "Bhutan",
 "guests": 4,
 "type": "Countryside, Adventure, Chilling, Luxury, Comfort, Asia",
-"summary": "You are looking for a cozy place in Europe with sea view, right?"
+"summary": "These accommodations have a pool and are close to the beach, perfect for creating your next travel memory."
 
 ```
 
@@ -192,24 +192,104 @@ def sanitize_filters(filters: dict) -> dict:
             sanitized[field] = []
 
     return sanitized
+    
+def fallback_extraction(user_prompt, filters):
+    user_prompt_lower = user_prompt.lower()
+
+    # Load regions and countries
+    with open("regional_groups.json", "r") as f:
+        REGIONAL_GROUPS = json.load(f)
+    
+    # Load travel terms
+    with open("travel_terms.json", "r") as f:
+        TRAVEL_TERMS = json.load(f)
+
+    # Build country and region sets
+    all_countries = set()
+    all_regions = set()
+    for region, countries in REGIONAL_GROUPS.items():
+        all_regions.add(region.lower())
+        all_countries.update(c.lower() for c in countries)
+
+    # 1. Country detection (exact match first)
+    for country in all_countries:
+        if re.search(r'\b' + re.escape(country) + r'\b', user_prompt_lower):
+            filters["country"] = country.title()
+            break
+
+    # 2. Region detection (if no country found)
+    if "country" not in filters:
+        for region in all_regions:
+            if re.search(r'\b' + re.escape(region) + r'\b', user_prompt_lower):
+                filters.setdefault("type", []).append(region.title())
+                # Add representative countries as features
+                if region in REGIONAL_GROUPS:
+                    rep_countries = REGIONAL_GROUPS[region][:2]
+                    filters.setdefault("features", []).extend([f"{region} region"] + rep_countries)
+                break
+
+    # 3. Travel term detection
+    for category, terms in TRAVEL_TERMS.items():
+        for term in terms:
+            if re.search(r'\b' + re.escape(term) + r'\b', user_prompt_lower):
+                # Map to appropriate filter field
+                if category == "accommodation_types":
+                    filters.setdefault("category", []).append(term.title())
+                elif category == "travel_styles":
+                    filters.setdefault("type", []).append(term.title())
+                elif category == "amenities":
+                    filters.setdefault("amenities", []).append(term.title())
+                elif category == "property_features":
+                    filters.setdefault("features", []).append(term.title())
+                elif category in ["seasonal_terms", "price_levels"]:
+                    filters.setdefault("type", []).append(term.title())
+                elif category == "group_types":
+                    if term in ["solo", "single"]:
+                        filters["guests"] = 1
+                    elif term in ["couple", "pair", "romantic"]:
+                        filters["guests"] = 2
+                    elif term == "family":
+                        filters["guests"] = 4
+                    elif term in ["friends", "group"]:
+                        filters["guests"] = 6
+
+    # Preis erkennen (verbesserte Regex für verschiedene Preisformate)
+    price_matches = re.finditer(r'(\$|€|£)?\s*(\d{2,4})(?:\s*(?:-|to|bis)\s*(\d{2,4}))?', user_prompt_lower)
+    for match in price_matches:
+        if match.group(3):  # Preisbereich (z.B. "100-200")
+            min_price = float(match.group(2))
+            max_price = float(match.group(3))
+            if "price" not in filters:
+                filters["price"] = {}
+            filters["price"]["min"] = min_price
+            filters["price"]["max"] = max_price
+        else:  # Einzelner Preis (z.B. "150")
+            price = float(match.group(2))
+            if "price" not in filters:
+                filters["price"] = {}
+            filters["price"]["max"] = price
+
+    return filters
+    
 # NLP-Modell laden
 nlp = spacy.load("en_core_web_md")
 
 # Load Regions
 with open("regional_groups.json", "r", encoding="utf-8") as f:
     REGIONAL_GROUPS = json.load(f)
+with open("important_keywords.json", "r", encoding="utf-8") as f:
+    important_keywords = json.load(f)
 
 def calculate_max_possible_score(sanitized_llm_filters):
     max_score = 0
 
     # Base similarity scores
-    max_score += 0.75  # user query similarity
-    max_score += 0.75  # json description similarity
+    max_score += 0.45  # user query similarity
+    max_score += 0.45  # json description similarity
+    max_score += 0.7   # prompt zu Desciption
 
-    # Fixed bonuses
-    # Land oder Region Punkte, aber niemals doppelt
+    # Land oder Region Punkte
     if "country" in sanitized_llm_filters and sanitized_llm_filters["country"]:
-        # Country vorhanden (z.B. France, Italy)
         max_score += 1  # ordentlich Punkte für echtes Land
     elif "type" in sanitized_llm_filters:
         for region in sanitized_llm_filters["type"]:
@@ -226,16 +306,10 @@ def calculate_max_possible_score(sanitized_llm_filters):
     # Exact keyword matches
     for field in ["features", "type", "amenities"]:
         if field in sanitized_llm_filters:
-            max_score += len(sanitized_llm_filters[field]) * 0.05  # 0.05 pro Keyword/Feld
+            max_score += len(sanitized_llm_filters[field]) * 0.1  # 0.05 pro Keyword/Feld
 
     # Semantic matches (gesamthaft begrenzt auf 0.8)
-    max_score += 0.8
-
-    # Region matching (optional)
-    if "type" in sanitized_llm_filters:
-        for region in sanitized_llm_filters["type"]:
-            if region.lower() in REGIONAL_GROUPS:
-                max_score += 0.2
+    max_score += 0.4
 
     return max_score
 
@@ -277,13 +351,35 @@ async def chat_logic(chat_input: ChatInput):
     llm_filters = llm_result.get("filters", {})
     sanitized_llm_filters = sanitize_filters(llm_filters)
     summary_text = llm_result.get("summary", "")
-    print("\n🎯 LLM-basierte Filter:", sanitized_llm_filters)
-
+    print("\n🎯 LLM-Key-Words:", sanitized_llm_filters)
+    
+    # Check if filters are too weak
+    weak_filters = (
+        not sanitized_llm_filters.get("country") and 
+        len(sanitized_llm_filters.get("features", [])) + 
+        len(sanitized_llm_filters.get("type", [])) < 1
+    )
+    
+    if weak_filters:
+        print("⚡ Detected weak LLM output → Activating fallback extraction...")
+        sanitized_llm_filters = fallback_extraction(user_query, sanitized_llm_filters)
+        
+        # Check if fallback also produced weak results
+        fallback_weak = (
+            not sanitized_llm_filters.get("country") and 
+            len(sanitized_llm_filters.get("features", [])) + 
+            len(sanitized_llm_filters.get("type", [])) < 2
+        )
+        
+        if fallback_weak:
+            print("⚠️ Both LLM and fallback extraction failed → Using pure similarity matching")
+            return pure_similarity_matching(user_query)
+        
     accommodations = get_accommodations()
     llm_filtered_accommodations = accommodations  # Kein harter Gäste-Filter
     min_guests = sanitized_llm_filters.get("guests", 1)  # Wird nur noch zum Scoren genutzt
 
-    # Calculate dynamic max possible score
+    # Max-Possible Score idk if needed
     max_possible_score = calculate_max_possible_score(sanitized_llm_filters)
     
     scored_accommodations = []
@@ -292,6 +388,7 @@ async def chat_logic(chat_input: ChatInput):
     for acc in llm_filtered_accommodations:
         score = 0
         
+        #Similarity calculations
         json_text_parts = []
         for key, value in sanitized_llm_filters.items():
             if isinstance(value, list):
@@ -304,13 +401,23 @@ async def chat_logic(chat_input: ChatInput):
         json_description = ". ".join(json_text_parts)
         json_vector = nlp(json_description)
 
+        #Prompt zu Haus Text
         acc_text = " ".join(str(value).lower() for value in acc.values())
         similarity_score = user_vector.similarity(nlp(acc_text))
-        score += similarity_score * 0.8
+        score += similarity_score * 0.5
         
+        #LLM Output zu Haus Text
         json_similarity_score = json_vector.similarity(nlp(acc_text))
-        score += json_similarity_score * 0.8
+        score += json_similarity_score * 0.5
 
+        # Description similarity
+        description = str(acc.get("description")) or ""
+        acc_description = description.lower()
+        if acc_description:
+            description_similarity = user_vector.similarity(nlp(acc_description))
+            score += description_similarity * 0.8
+
+        #Country + Price + Guest Points
         if sanitized_llm_filters:
             if "country" in sanitized_llm_filters and sanitized_llm_filters["country"].lower() in acc.get("country", "").lower():
                 score += 1
@@ -322,15 +429,25 @@ async def chat_logic(chat_input: ChatInput):
                     score += 0.75
             if "guests" in sanitized_llm_filters and acc.get("guests", 0) >= sanitized_llm_filters["guests"]:
                 score += 0.5
-
-            
+            if "city" in sanitized_llm_filters and acc.get("city", 0) >= sanitized_llm_filters["city"]:
+                score += 0.5
                     
             #Exakte Keywords
-            for field, weight in [("features", 0.05), ("type", 0.05), ("amenities", 0.05)]:
+            for field, weight in [("features", 0.1), ("type", 0.1), ("amenities", 0.1)]:
                 for keyword in sanitized_llm_filters.get(field, []):
-                    if keyword.lower() in acc_text:
+                    keyword_lower = keyword.lower()
+                    
+                    if keyword_lower in acc_text:
                         score += weight
-                        matched_keywords.add(keyword.lower())  # <--- HINZUFÜGEN
+                        matched_keywords.add(keyword_lower)
+                    else:
+                        # Wenn nicht im normalen acc_text gefunden → in Beschreibung suchen
+                        description = str(acc.get("description")) or ""
+                        acc_description = description.lower()
+                        if keyword_lower in acc_description:
+                            score += weight * 0.9  # leicht abgeschwächter Score (z.B. 90%)
+                            matched_keywords.add(keyword_lower)
+
 
 
             # Region matches NUR wenn kein Land angegeben
@@ -343,7 +460,7 @@ async def chat_logic(chat_input: ChatInput):
                             score += 1
                        
             # Nur wenn die Unterkunft schon mindestens 50% des maximalen Scores erreicht hat → semantisches Matching zulassen
-            if score >= (0.5 * max_possible_score):
+            if score >= (0.65 * max_possible_score):
                 semantic_score, debug = score_semantic_keywords(
                     sanitized_llm_filters, 
                     acc, 
@@ -363,7 +480,6 @@ async def chat_logic(chat_input: ChatInput):
     scored_accommodations.sort(key=lambda item: item[1], reverse=True)
     best_matches = [item[0] for item in scored_accommodations[:2]]
 
-    print("\n🔢 DETAILED SCORING BREAKDOWN:")
     print(f"Maximal mögliche Punktzahl (dynamisch berechnet): {round(max_possible_score, 2)}")
     
     for idx, (acc, score) in enumerate(scored_accommodations[:2], 1):
@@ -382,41 +498,98 @@ async def chat_logic(chat_input: ChatInput):
         json_description = ". ".join(json_text_parts)
         json_vector = nlp(json_description)
 
+        #PRINTEN DER TOP 2 SCORES:
         print(f"\n🏆 Top-{idx} Accommodation: {acc.get('name', 'N/A')} (ID: {acc.get('id', 'N/A')})")
         print(f"   Gesamtpunktzahl: {round(score, 2)} ({round((score / max_possible_score) * 100, 1)}% von Max)")
-        
-        user_sim = user_vector.similarity(nlp(acc_text)) * 0.75
-        json_sim = json_vector.similarity(nlp(acc_text)) * 0.75
+                
+        user_sim = user_vector.similarity(nlp(acc_text)) * 0.5
+        json_sim = json_vector.similarity(nlp(acc_text)) * 0.5
         print(f"   🔍 Ähnlichkeits-Punkte:")
         print(f"      - User-Query: {round(user_sim, 2)} (Raw: {round(user_vector.similarity(nlp(acc_text)), 2)})")
         print(f"      - JSON-Filter: {round(json_sim, 2)} (Raw: {round(json_vector.similarity(nlp(acc_text)), 2)})")
-        
+                
+        if acc_description:
+            desc_sim = user_vector.similarity(nlp(acc_description)) * 0.8
+            print(f"      - Description: {round(desc_sim, 2)} (Raw: {round(user_vector.similarity(nlp(acc_description)), 2)})")
+
         print("   ✅ Filter-Matches:")
         if "country" in sanitized_llm_filters and sanitized_llm_filters["country"].lower() in acc.get("country", "").lower():
-            print(f"      - Land: {sanitized_llm_filters['country']} (+1)")
-        
+            print(f"      - Land: {sanitized_llm_filters['country']} (+1.0)")
+                
         if "price" in sanitized_llm_filters and isinstance(sanitized_llm_filters["price"], dict):
             acc_price = acc.get("price", 99999)
             price_filter = sanitized_llm_filters["price"]
             if ("min" not in price_filter or acc_price >= price_filter.get("min", 0)) and \
                ("max" not in price_filter or acc_price <= price_filter.get("max", 99999)):
                 print(f"      - Preisrange: {price_filter} (+0.75)")
-        
+                
         if "guests" in sanitized_llm_filters and acc.get("guests", 0) >= sanitized_llm_filters["guests"]:
             print(f"      - Gästezahl: {acc.get('guests')} (≥ {sanitized_llm_filters['guests']}) (+0.5)")
-        
-        print("   🔑 Keyword-Matches:")
-        for field in ["features", "type", "amenities"]:
+                
+        # Exact Keyword Matches with Importance Boost
+        for field, base_weight in [("features", 0.1), ("type", 0.1), ("amenities", 0.1)]:
             for keyword in sanitized_llm_filters.get(field, []):
-                if keyword.lower() in acc_text:
-                    print(f"      - Exact Match: {field}='{keyword}' (+0.05)")
+                keyword_lower = keyword.lower()
+
+                # Check if keyword is "important"
+                importance_bonus = 0.0
+                for category_keywords in important_keywords.values():
+                    if keyword_lower in category_keywords:
+                        importance_bonus = 0.2  # +0.2 extra if it's important
+                        break
+
+                weight = base_weight + importance_bonus
+
+                if keyword_lower in acc_text:
+                    score += weight
+                    matched_keywords.add(keyword_lower)
+                else:
+                    description = str(acc.get("description")) or ""
+                    acc_description = description.lower()
+                    if keyword_lower in acc_description:
+                        score += weight * 0.9  # slight penalty if only found in description
+                        matched_keywords.add(keyword_lower)
+
 
     return {
         "results": best_matches,
         "recognized": sanitized_llm_filters,
         "summary": summary_text
     }
-    
+
+def pure_similarity_matching(user_query: str) -> dict:
+    """Vergleicht die Beschreibung mit der Nutzeranfrage für Similarity Matching"""
+    accommodations = get_accommodations()
+    user_doc = nlp(user_query.lower())
+
+    # Score each accommodation based on prompt similarity with description
+    scored = []
+    for acc in accommodations:
+        description = str(acc.get("description", "")).lower()
+        if not description:
+            continue
+
+        acc_doc = nlp(description)
+        similarity = acc_doc.similarity(user_doc)  # Hier ist die Änderung!
+        scored.append((acc, similarity))
+
+    # Sort by similarity (descending) and get top 2
+    scored.sort(key=lambda x: x[1], reverse=True)
+    best_matches = [item[0] for item in scored[:2]]
+
+    # Print debug info
+    for idx, (acc, score) in enumerate(scored[:2], 1):
+        print(f"\n🏆 Top-{idx} Similarity Match (Reversed): {acc.get('name', 'N/A')}")
+        print(f"    Similarity Score: {round(score, 2)}")
+        print(f"    Description: {acc.get('description', 'N/A')[:200]}...")
+
+    return {
+        "results": best_matches,
+        "recognized": {"method": "pure_similarity_reversed"},
+        "summary": "Please be patient and try again, as our AI algorithm had a problem and we need to use the simplest one..."
+    }
+ 
+#Semantische Key Word Erkennung bei Unnicherheit
 def score_semantic_keywords(sanitized_llm_filters, acc, nlp, matched_keywords=None, semantic_weights_flat=0.1, max_semantic_points=0.8):
     if matched_keywords is None:
         matched_keywords = set()

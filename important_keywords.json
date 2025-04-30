@@ -1,0 +1,23 @@
+{
+  "activity": [
+    "ski", "skiing", "snowboard", "hike", "hiking", "trek", "trekking", "adventure", "explore", "diving", "surfing", "kayak", "rafting", "safari", "gorilla trekking"
+  ],
+  "location": [
+    "coastal", "coast", "beachfront", "island", "mountain", "mountains", "countryside", "city", "jungle", "forest", "lakefront", "urban", "rural", "suburban", "downtown", "city center", "beach"
+  ],
+  "price": [
+    "cheap", "budget", "affordable", "low-cost", "deal", "last-minute", "special offer", "expensive", "luxury", "all-inclusive", "bargain", "budget-friendly"
+  ],
+  "group_type": [
+    "solo", "single", "family", "couple", "group", "friends", "bro", "kids", "parents", "honeymoon", "romantic", "team", "colleagues"
+  ],
+  "feature": [
+    "pool", "kitchen", "private pool", "hot tub", "hottub", "spa", "garden", "view", "sea view", "balcony", "fitness", "parking", "breakfast included", "pet-friendly", "oceanfront", "hot tub","room service", "meeting rooms", "event space", "washing machine", "dryer", "rooftop terrace", "sunset view", "sea view", "ocean view"
+  ],
+  "experience": [
+    "relaxing", "adventurous", "cultural", "historical", "gastronomic", "wellness", "romantic getaway", "family vacation", "business trip", "solo travel", "group travel", "ecotourism", "sustainable travel", "immersive experience", "local experience", "off the beaten path"
+  ],
+  "time": [
+    "winter", "summer", "spring", "autumn", "fall", "christmas", "new year", "easter", "next week", "last-minute", "holiday season", "weekend getaway", "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"
+  ] 
+}

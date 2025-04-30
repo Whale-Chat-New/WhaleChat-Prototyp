@@ -1,0 +1,40 @@
+{
+  "accommodation_types": [
+    "hotel", "resort", "hostel", "motel", "inn", "bed and breakfast", "b&b", 
+    "apartment", "condo", "villa", "cottage", "cabin", "chalet", "castle",
+    "farm stay", "treehouse", "houseboat", "yacht", "camping", "glamping",
+    "ryokan", "riyad", "pension", "guesthouse", "homestay", "lodge"
+  ],
+  "travel_styles": [
+    "backpacking", "luxury", "budget", "family", "romantic", "honeymoon",
+    "adventure", "wellness", "eco", "sustainable", "cultural", "historical",
+    "gastronomy", "shopping", "beach", "ski", "hiking", "cruise", "road trip",
+    "safari", "wildlife", "volunteer", "business", "solo", "group"
+  ],
+  "amenities": [
+    "pool", "spa", "gym", "sauna", "jacuzzi", "wifi", "parking", "breakfast",
+    "restaurant", "bar", "room service", "air conditioning", "heating",
+    "kitchen", "washer", "dryer", "tv", "workspace", "fireplace", "balcony",
+    "terrace", "garden", "beach access", "mountain view", "city view",
+    "ocean view", "river view", "lake view", "pet friendly", "accessible"
+  ],
+  "property_features": [
+    "modern", "rustic", "traditional", "minimalist", "bohemian", "luxury",
+    "vintage", "eco-friendly", "seaside", "lakeside", "riverside",
+    "mountain", "forest", "countryside", "urban", "downtown", "secluded",
+    "private", "shared", "quiet", "lively", "central", "remote"
+  ],
+  "seasonal_terms": [
+    "summer", "winter", "spring", "autumn", "fall", "christmas", "new year",
+    "easter", "holiday", "vacation", "peak season", "off season", "shoulder season",
+    "monsoon", "dry season", "wet season", "festival", "carnival"
+  ],
+  "price_levels": [
+    "luxury", "premium", "high-end", "mid-range", "budget", "economy",
+    "affordable", "cheap", "expensive", "reasonable", "moderate"
+  ],
+  "group_types": [
+    "solo", "single", "couple", "pair", "family", "friends", "group",
+    "team", "corporate", "school", "wedding", "retreat"
+  ]
+}

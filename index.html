@@ -12,7 +12,6 @@
 
       gtag('config', 'G-D760G5540Y');
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;700&family=Afacad:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #1a5f8b;
@@ -25,42 +24,247 @@
             --nav-hover: #0f4bcb; /* Dunkleres Blau für Hover */
         }
 
+        /* Loading Screen Styles */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(230,240,255, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            display: none;
+        }
+
+        .whale-loader {
+            position: relative;
+            width: 400px;
+            height: 300px;
+        }
+
+        .whale-loader .left {
+            position: absolute;
+            -webkit-clip-path: polygon(3% 30%, 9% 23%, 37% 30%, 42% 64%, 30% 66%, 11% 47%);
+            clip-path: polygon(3% 30%, 9% 23%, 37% 30%, 42% 64%, 30% 66%, 11% 47%);
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background: #488ab6;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .whale-loader .middle {
+            position: absolute;
+            -webkit-clip-path: polygon(89% 23%, 70% 13%, 37% 30%, 42% 64%, 50% 61%, 78% 27%);
+            clip-path: polygon(89% 23%, 70% 13%, 37% 30%, 42% 64%, 50% 61%, 78% 27%);
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background: #488ab6;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .whale-loader .tail {
+            position: absolute;
+            -webkit-clip-path: polygon(83% 19%, 87% 14%, 95% 12%, 91% 23%, 97% 32%, 90% 37%, 82% 27%);
+            clip-path: polygon(83% 19%, 87% 14%, 95% 12%, 91% 23%, 97% 32%, 90% 37%, 82% 27%);
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background: #1b3257;
+            z-index: 1;
+            transform-origin: center left;
+            animation: tail 0.8s ease-in-out infinite alternate;
+        }
+
+        @keyframes tail {
+            0% {transform: rotate(-0.3deg)}
+            100% {transform: rotate(0.3deg)}
+        }
+
+        .whale-loader .belly {
+            position: absolute;
+            -webkit-clip-path: polygon(7% 41%, 35% 52%, 58% 42%, 77% 23%, 90% 21%, 58% 70%, 30% 75%);
+            clip-path: polygon(7% 41%, 35% 52%, 58% 42%, 77% 23%, 90% 21%, 58% 70%, 30% 75%);
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background: #c1e2f7;
+            z-index: 2;
+        }
+
+        .whale-loader .eye {
+            position: absolute;
+            top: 40%;
+            left: 30%;
+            width: 5%;
+            height: 6%;
+            border-radius: 50%;
+            background: #002869;
+            z-index: 2;
+            animation: blink 3s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0% {transform: scaleY(1)}
+            1% {transform: scaleY(0.1)}
+            2% {transform: scaleY(1)}
+            60% {transform: scaleY(1)}
+            61% {transform: scaleY(0.1)}
+            62% {transform: scaleY(1)}
+            100% {transform: scaleY(1)}
+        }
+
+        .whale-loader .fin1 {
+            position: absolute;
+            -webkit-clip-path: polygon(45% 53%, 41% 64%, 47% 77%, 58% 80%, 51% 69%);
+            clip-path: polygon(45% 53%, 41% 64%, 47% 77%, 58% 80%, 51% 69%);
+            top: -1%;
+            left: -10%;
+            width: 100%;
+            height: 100%;
+            background: #1b3257;
+            z-index: 2;
+            transform-origin: center top;
+            animation: fin 0.8s ease-in-out infinite alternate;
+        }
+
+        .whale-loader .fin2 {
+            position: absolute;
+            -webkit-clip-path: polygon(23% 60%, 20% 70%, 25% 86%, 28% 64%);
+            clip-path: polygon(23% 60%, 20% 70%, 25% 86%, 28% 64%);
+            top: -10%;
+            left: -5%;
+            width: 100%;
+            height: 100%;
+            background: #1b3257;
+            z-index: 0;
+            transform-origin: center top;
+            animation: fin 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes fin {
+            0% {transform: rotate(-5deg)}
+            100% {transform: rotate(-3deg)}
+        }
+
+        .whale-loader .bubble {
+            position: absolute;
+            border-radius: 50%;
+            border: 4px solid #064375;
+            background: #064375;
+            z-index: 0;
+            animation: bubbles 3s ease-in infinite;
+        }
+
+        .whale-loader .bubble1 {
+            top: 10%;
+            left: 30%;
+            width: 8%;
+            height: 10%;
+            opacity: 0.8;
+            animation-delay: 0.8s;
+        }
+
+        .whale-loader .bubble2 {
+            bottom: 25%;
+            right: 35%;
+            width: 6%;
+            height: 8%;
+            opacity: 0.5;
+            z-index: 2;
+            animation-delay: 1s;
+        }
+
+        .whale-loader .bubble3 {
+            top: 40%;
+            right: 20%;
+            width: 8%;
+            height: 10%;
+            opacity: 0.7;
+            animation-delay: 1.3s;
+        }
+
+        .whale-loader .bubble4 {
+            bottom: 40%;
+            left: 5%;
+            width: 3%;
+            height: 4%;
+            opacity: 0.9;
+            z-index: 2;
+        }
+
+        @keyframes bubbles {
+            100% { 
+                transform: translateY(-300px) scale(0.5);
+                opacity: 0.3;
+                animation-timing-function: ease-in;
+            }
+        }
+
+        @media (max-width: 800px) {
+            .whale-loader {
+                width: 200px;
+                height: 150px;
+            }
+        }
+		
+		#loading-text {
+			position: absolute;
+			bottom: 15%;
+			width: 100%;
+			text-align: center;
+			color: #1b3257;
+			font-size: 1.5rem;
+			font-family: 'Playfair Display', serif;
+			padding: 0 10px;
+		}
+
         /* Header Styles */
         .main-header {
             width: 100%;
             background-color: white;
             padding: 20px 5%;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 0px solid #f0f0f0;
             font-family: 'Afacad', sans-serif;
         }
         
         .header-content {
-            width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            position: relative;
+			width: 100%;
+			max-width: 1400px;
+			margin: 0 auto;
+			display: flex;
+			justify-content: center;
+			align-items: center;
         }
-        
-        .logo-container {
-            margin-right: auto;
-        }
-        
+
         .logo {
             font-size: 24px;
             font-weight: 700; /* Fetter gemacht */
             color: var(--logo-blue); /* Dunkleres Blau für Logo */
-        }
-        
+			padding: 0px 0px 0px 30px; /* top, right, bottom, left */
+			
+        }       
+		
         .main-nav {
             display: flex;
+			position: static; /* Ändern von absolute zu static */
             gap: 40px;
-            margin: 0 auto;
-			font-weight: 600;
+            font-weight: 600;
+			justify-content: center;
         }
         
         .main-nav a {
@@ -89,6 +293,7 @@
         
         .social-links-container {
             margin-left: auto;
+			padding: 0px 30px 0px 0px; /* top, right, bottom, left */
         }
         
         .social-links {
@@ -115,7 +320,6 @@
             background-color: var(--nav-hover);
         }
 
-        /* Rest des CSS bleibt gleich */
         body {
             font-family: 'Afacad', sans-serif;
             margin: 0;
@@ -186,11 +390,16 @@
         }
 
         .chat-container {
-            margin-top: 100px;
+            margin-top: 150px;
             width: 100%;
             display: flex;
             justify-content: flex-start;
+			transition: margin 0.3s ease;  
         }
+		
+		.chat-container.active {
+			margin-top: 30px;                /* closer to the heading */
+		}
 
         #chat-form {
             display: flex;
@@ -335,93 +544,316 @@
             font-size: 1.2rem;
             margin-top: 40px;
         }
+		
+		.heading-mobile {
+			display: none;
+		}
+		.heading-desktop {
+			display: block;
+		}
+		
+		.header-top-row {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			width: 100%;
+		}
+		
+		.hamburger-menu {
+			display: none;               /* hidden on desktop */
+			flex-direction: column;
+			justify-content: space-between;
+			width: 30px;                 /* width of whole hamburger */
+			height: 22px;                /* height total of three bars */
+			cursor: pointer;
+		}
 
-        @media (max-width: 768px) {
-            .main-header {
-                flex-direction: column;
-                padding: 15px;
-                gap: 15px;
-            }
-            
-            .header-content {
-                flex-direction: column;
-                gap: 20px;
-            }
-            
-            .logo-container, .social-links-container {
-                margin: 0;
-            }
-            
-            .main-nav {
-                gap: 20px;
-            }
-            
-            .container {
-                padding: 20px;
-                width: 98%;
-            }
-            .main-heading-container::before {
-                top: -10px;
-                width: 40px;
-                height: 2px;
-            }
-            .main-heading {
-                font-size: 3.0rem;
-            }
-            .subheading {
-                font-size: 1.3rem;
-            }
-            .chat-container {
-                padding: 0;
-                justify-content: flex-start;
-            }
-            #chat-form {
-                width: 100%;
-                height: 60px;
-            }
-            #user_input {
-                font-size: 1.2rem;
-                padding: 15px 20px;
-            }
-            #chat-form button {
-                padding: 15px 20px;
-                min-width: 80px;
-                font-size: 1rem;
-            }
-        }
+		.hamburger-menu span {
+			display: block;
+			height: 4px;                 /* thickness of each line */
+			width: 100%;
+			background-color: var(--logo-blue); /* or white */
+			border-radius: 2px;
+		}		
+
+        /* MOBILE SPECIFIC STYLES (CLEAN AND FIXED) */
+		@media (max-width: 768px) {
+			.container {
+				width: 85%;
+				padding: 30px 20px 120px 20px;
+			}
+
+			.main-header {
+				flex-direction: column;
+				padding: 15px;
+				gap: 15px;
+			}
+
+			.header-content {
+				flex-direction: column;
+				gap: 20px;
+				align-items: stretch;
+				width: 100%;
+			}
+
+			.header-top-row {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				width: 100%;
+			}
+
+			.hamburger-menu {
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				width: 30px;
+				height: 22px;
+				cursor: pointer;
+			}
+
+			.hamburger-menu span {
+				display: block;
+				height: 4px;
+				width: 100%;
+				background-color: var(--logo-blue);
+				border-radius: 2px;
+			}
+
+			.main-nav {
+				display: none;
+				flex-direction: column;
+				gap: 15px;
+				background-color: #f5f9ff;
+				padding: 20px;
+				border-radius: 12px;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+				position: absolute;
+				top: 33px;
+				right: 20px; /* Changed from left to right */
+				/* left: 20px; Remove this line */
+				z-index: 100;
+				max-width: 220px;
+				width: 90%;
+				animation: fadeDown 0.3s ease-in-out;
+			}
+
+			.main-nav a {
+				text-decoration: none;
+				color: var(--logo-blue);
+				font-size: 1.1rem;
+				font-weight: 600;
+				padding: 10px 14px;
+				border-radius: 6px;
+				transition: background-color 0.2s ease;
+			}
+
+			.main-nav a:hover {
+				background-color: var(--light-blue-bg);
+			}
+
+			.main-nav.show {
+				display: flex;
+			}
+
+			@keyframes fadeDown {
+				from {
+					opacity: 0;
+					transform: translateY(-10px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			.social-links-container {
+				display: none;
+			}
+
+			.heading-mobile {
+				display: block;
+			}
+
+			.heading-desktop {
+				display: none;
+			}
+
+			#results {
+				grid-template-columns: 1fr;
+				gap: 20px;
+			}
+
+			#chat-form {
+				width: 90%;
+				flex-direction: column;
+				height: auto;
+				gap: 10px;
+				padding: 15px;
+			}
+
+			#user_input {
+				width: 100%;
+				margin: 0;
+				padding: 15px 20px;
+				font-size: 1.2rem;
+				color: white;
+			}
+
+			#chat-form button {
+				width: fit-content;        /* Button as wide as content */
+				align-self: flex-start;    /* Align left inside the column */
+				justify-content: flex-start;
+			}
+			
+			.main-heading-container::before {
+				width: 80px;     /* shorter */
+				height: 3px;     /* thinner */
+			}
+			
+			.main-heading {
+				font-size: 2rem;
+			}
+
+			.subheading {
+				font-size: 1rem;
+			}
+
+			/* Blue block just for header */
+			.container {
+				background-color: transparent;
+				padding: 0;
+			}
+
+			.header {
+				background-color: var(--light-blue-bg);
+				border-radius: 15px;
+				padding: 30px 20px 80px 20px;
+				max-width: 450px;
+				margin: 20px auto;
+			}
+		}
+
+		
+		.footer {
+			width: 100%;
+			max-width: 1400px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 20px 5%;
+			margin-top: 10px;
+			font-size: 0.75rem;
+			color: #555;
+			font-family: 'Afacad', sans-serif;
+			flex-wrap: wrap;
+			border-top: 1px solid #ddd;
+		}
+
+		.footer-text {
+			flex: 1;
+			max-width: 50%;
+			padding: 0px 0px 0px 30px; /* top, right, bottom, left */
+			color: black;
+		}
+
+		.footer-separator {
+			width: 2px;
+			background-color: #aaa;
+			height: 30px;
+			margin: 0 20px;
+		}
+
+		.footer-icons {
+			display: flex;
+			gap: 10px;
+		}
+
+		.footer-icons a {
+			background-color: var(--logo-blue);
+			color: white;
+			border-radius: 50%;
+			width: 30px;
+			height: 30px;
+			font-size: 12px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			text-decoration: none;
+			font-weight: bold;
+		}
+
     </style>
 </head>
 <body>
-    <header class="main-header">
-        <div class="header-content">
-            <div class="logo-container">
-                <div class="logo">WhaleChat</div>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="whale-loader">
+            <div class="left">
+                <div class="belly"></div>
             </div>
-            
-            <nav class="main-nav">
-                <a href="https://visitwhale.com" class="active">HOME</a>
-                <a href="https://visitwhale.com/about">ABOUT</a>
-                <a href="https://visitwhale.com/list">LIST</a>
-            </nav>
-            
-            <div class="social-links-container">
-                <div class="social-links">
-                    <a href="https://twitter.com/visitwhale" aria-label="Twitter">X</a>
-                    <a href="https://instagram.com/visitwhale" aria-label="Instagram">IG</a>
-                    <a href="https://pinterest.com/visitwhale" aria-label="Pinterest">P</a>
-                    <a href="https://tiktok.com/@visitwhale" aria-label="TikTok">T</a>
-                </div>
+            <div class="middle">
+                <div class="belly"></div>
             </div>
+            <div class="tail"></div>
+            <div class="fin1"></div>
+            <div class="fin2"></div>
+            <div class="eye"></div>
+            <div class="bubble bubble1"></div>
+            <div class="bubble bubble2"></div>
+            <div class="bubble bubble3"></div>
+            <div class="bubble bubble4"></div>
         </div>
-    </header>
+		<p id="loading-text">Diving deep to find your next perfect stay...</p>
+    </div>
+
+    <header class="main-header">
+		<div class="header-content">
+			<div class="header-top-row">
+				<div class="logo">WhaleChat</div>
+				<div class="hamburger-menu" onclick="toggleMenu()">
+					<span></span>
+					<span></span>
+					<span></span>
+				</div>
+			</div>
+
+			<nav class="main-nav">
+				<a href="https://visitwhale.com" class="active">HOME</a>
+				<a href="https://visitwhale.com/about">ABOUT</a>
+				<a href="https://visitwhale.com/list">LIST</a>
+			</nav>
+
+			<div class="social-links-container">
+				<div class="social-links">
+					<a href="https://twitter.com/visitwhale" aria-label="Twitter">X</a>
+					<a href="https://instagram.com/visitwhale" aria-label="Instagram">IG</a>
+					<a href="https://pinterest.com/visitwhale" aria-label="Pinterest">P</a>
+					<a href="https://tiktok.com/@visitwhale" aria-label="TikTok">T</a>
+				</div>
+			</div>
+		</div>
+	</header>
+
 
     <div class="container">
-        <div class="header">
-            <div class="main-heading-container">
-                <h1 class="main-heading">Less to Decide.<br>More to Travel.</h1>
-            </div>
-            <p class="subheading">Inspiration or precise request? We find it quickly.</p>
-        </div>
+		<div class="header">
+			<!-- DESKTOP VERSION -->
+			<div class="heading-desktop">
+				<div class="main-heading-container">
+					<h1 class="main-heading">Less to Decide.<br>More to Travel.</h1>
+				</div>
+				<p class="subheading">Inspiration or precise request? We find it quickly.</p>
+			</div>
+
+			<!-- MOBILE VERSION -->
+			<div class="heading-mobile">
+				<div class="main-heading-container">
+					<h1 class="main-heading">More to Travel.<br>Less to Decide.</h1>
+				</div>
+				<p class="subheading">Waiting doesn't create memories; traveling does.</p>
+			</div>
+		</div>
 
         <div class="chat-container">
             <form id="chat-form">
@@ -443,12 +875,21 @@
                 </button>
             </form>
         </div>
-	<div id="summary-box" style="margin-top: 30px; font-size: 1.1rem; color: var(--secondary); font-weight: 600;"></div>
-	<div id="recognized-box" style="margin-top: 10px; font-size: 1rem; color: #444;"></div>
-
+        <div id="summary-box" style="margin-top: 30px; font-size: 1.1rem; color: var(--secondary); font-weight: 600;"></div>
+        <div id="recognized-box" style="margin-top: 10px; font-size: 1rem; color: #444;"></div>
         <div id="results"></div>
     </div>
-
+	<footer class="footer">
+		<div class="footer-text">WhaleChat uses an intelligent algorithm for finding your next vacation rental. We make your ideas a reality.</div>
+		<div class="footer-separator"></div>
+		<div class="footer-icons">
+			<a href="https://twitter.com/visitwhale" aria-label="Twitter">X</a>
+            <a href="https://instagram.com/visitwhale" aria-label="Instagram">IG</a>
+            <a href="https://pinterest.com/visitwhale" aria-label="Pinterest">P</a>
+            <a href="https://tiktok.com/@visitwhale" aria-label="TikTok">T</a>
+		</div>
+	</footer>
+	
     <script>
         function animatePrice(element, duration = 2000) {
             const target = parseFloat(element.getAttribute("data-target"));
@@ -464,11 +905,17 @@
             }
             requestAnimationFrame(updatePrice);
         }
-
+		function toggleMenu() {
+			const nav = document.querySelector('.main-nav');
+			nav.classList.toggle('show');
+		}
         document.getElementById("chat-form").addEventListener("submit", async function(e) {
             e.preventDefault();
             const userInput = document.getElementById("user_input").value;
             const button = this.querySelector('button');
+            
+            // Show loading screen
+            document.getElementById('loading-screen').style.display = 'flex';
 
             button.disabled = true;
             button.innerHTML = '<span>Exploring...</span>';
@@ -482,14 +929,13 @@
 
                 const data = await res.json();
                 const resultsDiv = document.getElementById("results");
-				
-				document.getElementById("summary-box").innerText = data.summary || "";
-				document.getElementById("recognized-box").innerText = data.recognized?.type ? 
-					"And your Perfect Set-Up is: " + (Array.isArray(data.recognized.type) ?
-						data.recognized.type.join(", ") :
-						data.recognized.type)
-					: "";
-
+                
+                document.getElementById("summary-box").innerText = data.summary || "";
+                document.getElementById("recognized-box").innerText = data.recognized?.type ? 
+                    "And your Perfect Set-Up is: " + (Array.isArray(data.recognized.type) ?
+                        data.recognized.type.join(", ") :
+                        data.recognized.type)
+                    : "";
 
                 if(data.results.length === 0) {
                     resultsDiv.innerHTML = `<div class="no-results">No perfect matches found. Try different keywords!</div>`;
@@ -518,6 +964,9 @@
                 console.error(error);
                 alert("Search failed. Please try again.");
             } finally {
+                // Hide loading screen
+                document.getElementById('loading-screen').style.display = 'none';
+                
                 button.disabled = false;
                 button.innerHTML = `
                     <span>Explore</span>
@@ -532,10 +981,19 @@
                                 <path class="st0" d="M507.068,194.059c-5.3-6.143-13.759-8.507-21.481-6.013l-59.859,17.264 c-11.406,3.695-23.81,2.792-34.574-2.507l-68.887-33.742l61.093-80.864c4.682-4.847,5.584-12.261,2.139-18.095 c-3.422-5.809-10.336-8.638-16.848-6.903L247.486,116.32l23.597,11.572l-16.23,8.115l-24.69-12.095L124.278,72.015 C65.799,43.262,18.154,52.695,3.16,83.208c-14.994,30.522,26.591,49.402,57.102,64.395l105.696,52.041l54.749,242.78 c1.877,8.982,10.003,15.28,19.224,14.828c9.172-0.464,16.633-7.509,17.632-16.669l33.956-179.158l73.569,36.226 c47.073,21.732,97.259,19.64,112.253-10.86l32.579-70.61C513.507,208.911,512.39,200.19,507.068,194.059z"/>
                             </g>
                         </g>
-                    </svg>
+                    </svg>			
                 `;
             }
         });
+	document.getElementById("user_input").addEventListener("input", function () {
+		const chatContainer = document.querySelector(".chat-container");
+		if (this.value.trim().length > 0) {
+			chatContainer.classList.add("active");
+		} else {
+			chatContainer.classList.remove("active");
+		}
+	});
+
     </script>
 </body>
 </html>

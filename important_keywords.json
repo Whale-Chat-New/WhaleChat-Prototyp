@@ -9,13 +9,13 @@
     "cheap", "budget", "affordable", "low-cost", "deal", "last-minute", "special offer", "expensive", "luxury", "all-inclusive", "bargain", "budget-friendly"
   ],
   "group_type": [
-    "solo", "single", "family", "couple", "group", "friends", "bro", "kids", "parents", "honeymoon", "romantic", "team", "colleagues"
+    "solo", "single", "family", "couple", "group", "friends", "bro", "kids", "parents", "honeymoon", "romantic", "team", "colleagues", "girlfriend", "wife", "alone"
   ],
   "feature": [
-    "pool", "kitchen", "private pool", "hot tub", "hottub", "spa", "garden", "view", "sea view", "balcony", "fitness", "parking", "breakfast included", "pet-friendly", "oceanfront", "hot tub","room service", "meeting rooms", "event space", "washing machine", "dryer", "rooftop terrace", "sunset view", "sea view", "ocean view"
+    "pool", "kitchen", "private pool", "hot tub", "hottub", "spa", "garden", "view", "sea view", "balcony", "fitness", "parking", "breakfast included", "pet-friendly", "oceanfront", "ocean", "hot tub","room service", "meeting rooms", "event space", "washing machine", "dryer", "rooftop terrace", "sunset view", "sea view", "ocean view"
   ],
   "experience": [
-    "relaxing", "adventurous", "cultural", "historical", "gastronomic", "wellness", "romantic getaway", "family vacation", "business trip", "solo travel", "group travel", "ecotourism", "sustainable travel", "immersive experience", "local experience", "off the beaten path"
+    "relaxing", "adventurous", "cultural", "historical", "luxurious", "gastronomic", "wellness", "romantic getaway", "family vacation", "business trip", "solo travel", "group travel", "ecotourism", "sustainable travel", "immersive experience", "local experience", "off the beaten path"
   ],
   "time": [
     "winter", "summer", "spring", "autumn", "fall", "christmas", "new year", "easter", "next week", "last-minute", "holiday season", "weekend getaway", "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"

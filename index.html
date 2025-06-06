@@ -247,7 +247,7 @@
 			max-width: 1400px;
 			margin: 0 auto;
 			display: flex;
-			justify-content: center;
+			justify-content: space-between;
 			align-items: center;
         }
 
@@ -261,7 +261,9 @@
 		
         .main-nav {
             display: flex;
-			position: static; /* Ändern von absolute zu static */
+			position: absolute; /* Neu hinzugefügt */
+			left: 50%; /* Neu hinzugefügt */
+			transform: translateX(-50%);
             gap: 40px;
             font-weight: 600;
 			justify-content: center;
@@ -292,7 +294,7 @@
         }
         
         .social-links-container {
-            margin-left: auto;
+            margin-left: 0;
 			padding: 0px 30px 0px 0px; /* top, right, bottom, left */
         }
         
@@ -330,6 +332,8 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+			width: 100%;
+			overflow-x: hidden;
         }
 
         .container {
@@ -492,6 +496,7 @@
         .property-image {
             width: 100%;
             aspect-ratio: 4 / 3;
+			max-height: none;
             position: relative;
             overflow: hidden;
             border-top-left-radius: 8px;
@@ -502,6 +507,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+			border-radius: 10px;
         }
 
         .property-info {
@@ -516,7 +522,7 @@
         .property-price {
             color: var(--primary);
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.6rem;
             margin: 10px 0;
         }
 
@@ -560,24 +566,26 @@
 		}
 		
 		.hamburger-menu {
-			display: none;               /* hidden on desktop */
+			display: none;   /* hidden on desktop */
 			flex-direction: column;
 			justify-content: space-between;
-			width: 30px;                 /* width of whole hamburger */
-			height: 22px;                /* height total of three bars */
+			width: 30px;    /* width of whole hamburger */
+			height: 22px;  /* height total of three bars */
 			cursor: pointer;
 		}
 
 		.hamburger-menu span {
 			display: block;
-			height: 4px;                 /* thickness of each line */
+			height: 4px;    /* thickness of each line */
 			width: 100%;
 			background-color: var(--logo-blue); /* or white */
 			border-radius: 2px;
 		}		
 
         /* MOBILE SPECIFIC STYLES (CLEAN AND FIXED) */
-		@media (max-width: 768px) {
+		@media (max-width: 1300px) {
+			
+			
 			.container {
 				width: 85%;
 				padding: 30px 20px 120px 20px;
@@ -610,6 +618,7 @@
 				width: 30px;
 				height: 22px;
 				cursor: pointer;
+				margin-right: 30px;
 			}
 
 			.hamburger-menu span {
@@ -618,9 +627,14 @@
 				width: 100%;
 				background-color: var(--logo-blue);
 				border-radius: 2px;
+				margin-right: 30px;
 			}
 
 			.main-nav {
+				position: absolute;
+				left: auto; /* Überschreibt die Desktop-Positionierung */
+				right: 20px; /* Bleibt rechts */
+				transform: none; /* Entfernt die Zentrierung */
 				display: none;
 				flex-direction: column;
 				gap: 15px;
@@ -628,10 +642,7 @@
 				padding: 20px;
 				border-radius: 12px;
 				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-				position: absolute;
 				top: 33px;
-				right: 20px; /* Changed from left to right */
-				/* left: 20px; Remove this line */
 				z-index: 100;
 				max-width: 220px;
 				width: 90%;
@@ -680,16 +691,20 @@
 			}
 
 			#results {
-				grid-template-columns: 1fr;
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* Responsive Cards */
 				gap: 20px;
 			}
-
+			
 			#chat-form {
-				width: 90%;
+				width: 80%; /* 75% der verfügbaren Breite */
+				margin: 0; /* Kein Auto-Margin, um Linksausrichtung zu erzwingen */
+				margin-right: auto; /* Links ausrichten (kein Zentrieren) */
 				flex-direction: column;
 				height: auto;
 				gap: 10px;
-				padding: 15px;
+				padding: 10px 0px 10px 10px; /* top, right, bottom, left */;
+				box-sizing: border-box;
 			}
 
 			#user_input {
@@ -701,9 +716,9 @@
 			}
 
 			#chat-form button {
-				width: fit-content;        /* Button as wide as content */
-				align-self: flex-start;    /* Align left inside the column */
-				justify-content: flex-start;
+				width: fit-content; /* Button so breit wie der Inhalt */
+				align-self: flex-start; /* Links ausrichten im Flex-Container */
+				justify-content: flex-start; /* Text im Button linksbündig */
 			}
 			
 			.main-heading-container::before {
@@ -722,15 +737,21 @@
 			/* Blue block just for header */
 			.container {
 				background-color: transparent;
-				padding: 0;
+				padding: 10px;
+				border-radius: 15px;
+				width: 97%; /* 95% der verfügbaren Breite */
+				margin: 0 auto; /* Zentriert den Container */
+				box-sizing: border-box;
 			}
 
 			.header {
 				background-color: var(--light-blue-bg);
 				border-radius: 15px;
-				padding: 30px 20px 80px 20px;
-				max-width: 450px;
-				margin: 20px auto;
+				padding: 20px 0px 80px 10px; /* top, right, bottom, left */
+				width: 100%; /* Nimmt die volle Breite des Containers ein */
+				margin: 20px auto; /* Zentriert die Box im Container */
+				text-align: left; /* Text linksbündig */
+				box-sizing: border-box;
 			}
 		}
 
@@ -741,8 +762,8 @@
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			padding: 20px 5%;
-			margin-top: 10px;
+			padding: 0px 5%;
+			margin-top: 5px;
 			font-size: 0.75rem;
 			color: #555;
 			font-family: 'Afacad', sans-serif;
@@ -782,6 +803,204 @@
 			text-decoration: none;
 			font-weight: bold;
 		}
+		
+		@media (min-width: 1301px) {
+			.footer {
+				padding: 10px 0px 10px 0px; /* top, right, bottom, left */
+			}
+			
+			.footer-text {
+				font-size: 1.25rem;
+				line-height: 1.6; /* Bessere Lesbarkeit */
+			}
+			
+			.footer-text p {
+				margin: 8px 0; /* Abstand zwischen den Absätzen */
+			}
+		}
+		
+		/* --- START: WhaleCard Layout Styles --- */
+		.fancy-card {
+			background: white; /* Solid white background */
+			border-radius: 12px;
+			box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Subtle shadow */
+			padding: 12px;
+		}
+
+		.card-header-custom {
+		  display: flex;
+		  justify-content: space-between;
+		  align-items: flex-start;
+		  gap: 15px;
+		  padding: 15px 15px 0 15px;
+		}
+		
+		.card-header-custom .info-left {
+		  display: flex;
+		  flex-direction: column;
+		  align-items: flex-start;
+		  gap: 8px;
+		  max-width: 50%;
+		}
+
+		.card-header-custom .image-right img {
+			width: 80%;
+			object-fit: cover;
+			border-radius: 12px;
+			box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+		}
+
+		.card-header-custom .image-right {
+		  display: flex;
+		  justify-content: flex-end;
+		  align-items: flex-start;
+		  width: 100%;
+		}
+
+		.header-button-wrapper {
+		  display: flex;
+		  align-items: flex-end;
+		}
+
+		.start-here-btn {
+		  background-color: #0077cc;
+		  color: white;
+		  font-weight: 600;
+		  border: none;
+		  border-radius: 6px;
+		  padding: 8px 14px;
+		  cursor: pointer;
+		  transition: background-color 0.2s ease;
+		  font-size: 0.9rem;
+		}
+
+		.start-here-btn:hover {
+		  background-color: #005fa3;
+		}
+
+
+		.flag-column {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			font-size: 1rem;
+			min-width: 80px;
+			padding-top: 10px;  /* Remove any top padding */
+			margin-top: 15px;
+		}
+		
+		.flag-icon {
+			width: 90px;
+			height: 60px;
+			object-fit: cover;
+			border-radius: 3px;
+			margin-bottom: 5px;
+			box-shadow: 0 0 2px rgba(0,0,0,0.2);
+			border: 1px solid #ddd;
+		}
+
+		
+		.flag {
+			font-size: 2rem;
+			margin-bottom: 2px;
+		}
+
+
+		.flag-wrapper {
+			display: flex;
+			flex-direction: column;
+			align-items: left;
+			text-align: left;
+		}
+
+		.country-label {
+			font-size: 0.85rem;
+			color: #666;
+			margin-top: 0.5px;      /* 👈 closer to flag */
+			line-height: 1;
+			letter-spacing: 0.3px;
+		}
+
+
+		.city {
+			font-weight: 600;
+			font-size: 1.5rem;
+			color: #333;
+		}
+		
+		
+		.label-icon {
+			width: 20px;
+			height: 20px;
+			object-fit: contain;
+			margin-right: 6px;
+			vertical-align: middle;
+		}
+
+		.card-bottom-row {
+		  display: flex;
+		  justify-content: space-between;
+		  align-items: flex-start;
+		  padding: 15px 20px;
+		  gap: 25px;
+		  margin: 10px 15px 0 15px;
+		  background-color: #f9f9f9;
+		  border-radius: 10px;
+		  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+		}
+
+		.info-section {
+		  display: flex;
+		  justify-content: flex-start;
+		  align-items: flex-end;
+		  gap: 40px;
+		  min-width: 90px;
+		}
+
+		.info-block {
+		  display: flex;
+		  flex-direction: column;
+		  align-items: center;
+		  text-align: center;
+		}
+
+		.info-icon {
+		  width: 42px;
+		  height: 42px;
+		  object-fit: contain;
+		  margin-bottom: 4px;
+		}
+
+		.info-text {
+		  font-size: 1rem;
+		  font-weight: 600;
+		  color: #222;
+		}
+
+		.divider {
+		  width: 1px;
+		  background-color: #ccc;
+		  height: 80px;
+		  margin-top: 2px;
+		}
+
+		.amenities-grid {
+		  display: grid;
+		  grid-template-columns: repeat(3, 1fr);
+		  gap: 8px 10px; /* tighter spacing */
+		  justify-items: center;
+		  align-items: center;
+		  flex-grow: 1;
+		  padding-top: 2px;
+		}
+
+		.amenity-icon {
+		  width: 34px;
+		  height: 34px;
+		  object-fit: contain;
+		  opacity: 0.95;
+		}
+
 
     </style>
 </head>
@@ -857,7 +1076,7 @@
 
         <div class="chat-container">
             <form id="chat-form">
-                <input type="text" id="user_input" placeholder="Ready to plan? Start typing..." style="color: white;" />
+                <input type="text" id="user_input" placeholder="Where? What? Who? All your Choice!" style="color: white;" />
                 <button type="submit" style="display: flex; align-items: center; padding: 10px 15px;">
                     <span>Explore</span>
                     <svg height="30" width="30" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="#000000" transform="matrix(-1, 0, 0, 1, 0, 0)" style="margin-left: 10px;">
@@ -891,6 +1110,100 @@
 	</footer>
 	
     <script>
+	
+	const countryCodeMap = {
+		"Afghanistan": "af", "Albania": "al", "Algeria": "dz", "Andorra": "ad", "Angola": "ao",
+		"Argentina": "ar", "Armenia": "am", "Australia": "au", "Austria": "at", "Azerbaijan": "az",
+		"Bahamas": "bs", "Bahrain": "bh", "Bangladesh": "bd", "Barbados": "bb", "Belarus": "by",
+		"Belgium": "be", "Belize": "bz", "Benin": "bj", "Bhutan": "bt", "Bolivia": "bo",
+		"Bosnia and Herzegovina": "ba", "Botswana": "bw", "Brazil": "br", "Brunei": "bn", "Bulgaria": "bg",
+		"Burkina Faso": "bf", "Burundi": "bi", "Cambodia": "kh", "Cameroon": "cm", "Canada": "ca",
+		"Cape Verde": "cv", "Central African Republic": "cf", "Chad": "td", "Chile": "cl", "China": "cn",
+		"Colombia": "co", "Comoros": "km", "Congo": "cg", "Costa Rica": "cr", "Croatia": "hr",
+		"Cuba": "cu", "Cyprus": "cy", "Czech Republic": "cz",  "Czechia": "cz", "Denmark": "dk", "Djibouti": "dj",
+		"Dominican Republic": "do", "Ecuador": "ec", "Egypt": "eg", "El Salvador": "sv", "Estonia": "ee",
+		"Eswatini": "sz", "Ethiopia": "et", "Fiji": "fj", "Finland": "fi", "France": "fr",
+		"Gabon": "ga", "Gambia": "gm", "Georgia": "ge", "Germany": "de", "Ghana": "gh",
+		"Greece": "gr", "Grenada": "gd", "Guatemala": "gt", "Guinea": "gn", "Guyana": "gy",
+		"Haiti": "ht", "Honduras": "hn", "Hungary": "hu", "Iceland": "is", "India": "in",
+		"Indonesia": "id", "Iran": "ir", "Iraq": "iq", "Ireland": "ie", "Israel": "il",
+		"Italy": "it", "Jamaica": "jm", "Japan": "jp", "Jordan": "jo", "Kazakhstan": "kz",
+		"Kenya": "ke", "Kuwait": "kw", "Kyrgyzstan": "kg", "Laos": "la", "Latvia": "lv",
+		"Lebanon": "lb", "Lesotho": "ls", "Liberia": "lr", "Libya": "ly", "Liechtenstein": "li",
+		"Lithuania": "lt", "Luxembourg": "lu", "Madagascar": "mg", "Malawi": "mw", "Malaysia": "my",
+		"Maldives": "mv", "Mali": "ml", "Malta": "mt", "Mauritania": "mr", "Mexico": "mx",
+		"Moldova": "md", "Monaco": "mc", "Mongolia": "mn", "Montenegro": "me", "Morocco": "ma",
+		"Mozambique": "mz", "Myanmar": "mm", "Namibia": "na", "Nepal": "np", "Netherlands": "nl",
+		"New Zealand": "nz", "Nicaragua": "ni", "Niger": "ne", "Nigeria": "ng", "North Macedonia": "mk",
+		"Norway": "no", "Oman": "om", "Pakistan": "pk", "Panama": "pa", "Paraguay": "py",
+		"Peru": "pe", "Philippines": "ph", "Poland": "pl", "Portugal": "pt", "Qatar": "qa",
+		"Romania": "ro", "Russia": "ru", "Rwanda": "rw", "Saudi Arabia": "sa", "Senegal": "sn",
+		"Serbia": "rs", "Seychelles": "sc", "Singapore": "sg", "Slovakia": "sk", "Slovenia": "si",
+		"Somalia": "so", "South Africa": "za", "South Korea": "kr", "Spain": "es", "Sri Lanka": "lk",
+		"Sudan": "sd", "Suriname": "sr", "Sweden": "se", "Switzerland": "ch", "Syria": "sy",
+		"Taiwan": "tw", "Tajikistan": "tj", "Tanzania": "tz", "Thailand": "th", "Togo": "tg",
+		"Trinidad and Tobago": "tt", "Tunisia": "tn", "Turkey": "tr", "Uganda": "ug", "Ukraine": "ua",
+		"United Arab Emirates": "ae", "United Kingdom": "gb", "UK": "gb", "USA": "us", "Uruguay": "uy", "Uzbekistan": "uz",
+		"Venezuela": "ve", "Vietnam": "vn", "Yemen": "ye", "Zambia": "zm", "Zimbabwe": "zw"
+	};
+
+
+	const amenityIcons = {
+		"WiFi": "wifi.png",
+		"Kitchen": "kitchen.png",
+		"Parking": "parking.png",
+		"Pets": "pets.png",
+		"Air conditioning": "air-conditioner.png",
+		"Fireplace": "fireplace.png",
+		"Terrace": "terrace.png",
+		"Balcony": "balcony.png",
+		"Pool": "pool.png",
+		"BBQ": "bbq.png",
+		"Hot tub": "hot-tub.png",
+		"Sauna": "sauna.png",
+		"TV": "tv.png",
+		"Desk": "desk.png",
+		"Lift": "lift.png",
+		"Self-Check-In": "self-check-in.png",
+		"Safe": "safe.png",
+		"Heating": "heating.png",
+		"Breakfast": "breakfast.png",
+		"National Park": "national-park.png",
+		"Mountains": "mountains.png",
+		"Beach": "beach.png",
+		"City": "city.png",
+		"Countryside": "countryside.png",
+		"Price": "price.png",
+		"Guests": "guests.png"
+	};
+	
+	const amenityRanking = [
+		"Pool", "WiFi", "Kitchen", "Balcony", "Terrace", "Air conditioning",
+		"Parking", "Pets", "Fireplace", "Sauna", "BBQ", "Hot tub",
+		"Desk", "TV", "Lift", "Safe", "Heating", "Breakfast",
+		"National Park", "Mountains", "Beach", "City", "Countryside"
+	];
+
+	function getTopAmenities(amenitiesString, featuresString) {
+		const combined = (amenitiesString + "," + featuresString).split(",").map(s => s.trim());
+		const ranked = [];
+
+		for (let key of amenityRanking) {
+			if (combined.includes(key)) {
+				ranked.push(key);
+				if (ranked.length === 6) break;
+			}
+		}
+
+		return ranked.map(name => {
+			const file = amenityIcons[name];
+			return file ? `<img src="icons/${file}" class="amenity-icon" alt="${name}">` : "";
+		}).join("");
+	}
+
+
+
+
         function animatePrice(element, duration = 2000) {
             const target = parseFloat(element.getAttribute("data-target"));
             let startTime = null;
@@ -940,21 +1253,51 @@
                 if(data.results.length === 0) {
                     resultsDiv.innerHTML = `<div class="no-results">No perfect matches found. Try different keywords!</div>`;
                 } else {
-                    resultsDiv.innerHTML = data.results.map(r => `
-                        <div class="card-wrapper">
-                            <div class="property-card">
-                                <div class="property-image">
-                                    <img src="${r.image_url}">
-                                </div>
-                                <div class="property-info">
-                                    <h3>${r.name}</h3>
-                                    <div>${r.city}, ${r.country}</div>
-                                    <div class="property-price" data-target="${r.price}">0 €/night</div>
-                                    <button class="start-here-btn" onclick="window.open('${r.link}', '_blank')">Start Here</button>
-                                </div>
-                            </div>
-                        </div>
-                    `).join("");
+                    resultsDiv.innerHTML = data.results.map(r => {
+						const code = countryCodeMap[r.country];
+						const flag = code ? `
+							<div class="flag-wrapper">
+								<img src="flags/${code}.png" alt="${r.country} flag" class="flag-icon">
+								<div class="country-label">${r.country}</div>
+							</div>` : "";
+
+
+						const amenitiesList = getTopAmenities(r.amenities || "", r.features || "");
+
+
+						return `
+						<div class="card-wrapper">
+							<div class="property-card fancy-card">
+								<div class="card-header-custom">
+								  <div class="info-left">
+									<div class="flag">${flag}</div>
+									<div class="city">${r.city}</div>
+									<button class="start-here-btn" onclick="window.open('${r.link}', '_blank')">Start Here</button>
+								  </div>
+								  <div class="image-right">
+									<img src="${r.image_url}" alt="${r.name}">
+								  </div>
+								</div>
+								<div class="card-bottom-row">
+								  <div class="info-section">
+									<div class="info-block">
+									  <img src="icons/price.png" class="info-icon" alt="price">
+									  <div class="info-text">${r.price} €/night</div>
+									</div>
+									<div class="info-block">
+									  <img src="icons/guests.png" class="info-icon" alt="guests">
+									  <div class="info-text">${r.guests} guests</div>
+									</div>
+								  </div>
+								  <div class="divider"></div>
+								  <div class="amenities-grid">
+									${amenitiesList}
+								  </div>
+								</div>
+							</div>
+						</div>
+						`;
+					}).join("");
 
                     document.querySelectorAll(".property-price").forEach(el => {
                         animatePrice(el);
